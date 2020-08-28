@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:rsb_indicator_text_color="http://schemas.android.com/apk/res-auto">
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="593dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="138dp" />
+
+    <ImageView
+        android:id="@+id/pause_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignStart="@+id/videoView"
+        android:layout_alignLeft="@+id/videoView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="188dp"
+        android:layout_marginLeft="188dp"
+        android:layout_marginTop="636dp"
+        android:layout_marginEnd="199dp"
+        android:layout_marginRight="199dp"
+        android:layout_marginBottom="616dp"
+        android:src="@drawable/icon_pause" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/leftClock"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scrubBar"
+            android:layout_marginTop="0dp"
+            android:text="00:00:00"
+            android:textSize="@dimen/_12sdp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="00:00:00"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/scrubBar"
+            android:id = "@+id/rightClock"
+            android:textSize="@dimen/_12sdp"
+            />
+
+        <org.florescu.android.rangeseekbar.RangeSeekBar
+            android:id="@+id/scrubBar"
+            rsb_indicator_text_color="#FF4500"
+            rsb_progress_color="#228B22"
+            rsb_progress_default_color="color/colorPrimaryDark"
+            rsb_tick_mark_text_color="color/colorPrimaryDark"
+            android:layout_width="359dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp" />
+
+
+
+    </RelativeLayout>
+</RelativeLayout>

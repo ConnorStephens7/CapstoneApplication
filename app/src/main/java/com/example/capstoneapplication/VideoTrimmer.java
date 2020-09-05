@@ -28,9 +28,7 @@ import android.widget.VideoView;
 
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
-import com.github.hiteshsondhi88.libffmpeg.FFmpegLoadBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
-import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
@@ -259,7 +257,7 @@ public class VideoTrimmer extends AppCompatActivity {
         @Override
         public boolean onCreateOptionsMenu(Menu menu){
             MenuInflater menuInflater = getMenuInflater();
-            menuInflater.inflate(R.menu.menu,menu);
+            menuInflater.inflate(R.menu.trimmer_menu,menu);
             return true;
         }
 

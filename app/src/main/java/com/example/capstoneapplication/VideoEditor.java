@@ -60,6 +60,7 @@ public class VideoEditor extends AppCompatActivity {
 
         }
         configureVideoTrimmerButton();
+        configureVideoCropperButton();
         clickListeners();
     }
 
@@ -133,6 +134,19 @@ public class VideoEditor extends AppCompatActivity {
                 Intent toTrimmer =new Intent(VideoEditor.this, VideoTrimmer.class);
                 toTrimmer.putExtra("uri", uri.toString());
                 startActivity(toTrimmer);
+
+            }
+        });
+    }
+
+    public void configureVideoCropperButton(){
+        ImageButton IEButton =  findViewById(R.id.video_crop_button);
+        IEButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toCropper =new Intent(VideoEditor.this, VideoCropper.class);
+                toCropper.putExtra("uri", uri.toString());
+                startActivity(toCropper);
 
             }
         });

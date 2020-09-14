@@ -85,18 +85,22 @@
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-
                     android:minWidth="75dp"
                     android:minHeight="75dp"
-                    tools:src="@drawable/icon_merge" />
+                    android:padding="20dp"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/merge_icon" />
+
                 <ImageButton
-                    android:id="@+id/button2"
+                    android:id="@+id/video_filter_button"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
 
                     android:minWidth="75dp"
                     android:minHeight="75dp"
+                    android:src="@drawable/icon_vid_filter"
                     />
                 <ImageButton
                     android:id="@+id/button3"

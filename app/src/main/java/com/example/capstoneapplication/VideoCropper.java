@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
 
-
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
@@ -39,7 +38,6 @@ public class VideoCropper extends AppCompatActivity {
     Uri uri;
     ImageView imgView;
     VideoView vidView;
-    boolean vidPlaying = false;
     String fileName;
     CropImageView frame;
     File destination;
@@ -58,7 +56,6 @@ public class VideoCropper extends AppCompatActivity {
         if (passUri != null) {
             String videoPath = passUri.getStringExtra("uri");
             uri = Uri.parse(videoPath);
-            //vidView.setVideoURI(uri);
             frame = findViewById(R.id.cropImageView);
 
             MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
@@ -168,8 +165,6 @@ public class VideoCropper extends AppCompatActivity {
         });
 
     }
-
-
 
     private String getPathFromUri(Context ctxt, Uri uriData) {
         Cursor cursor = null;

@@ -61,6 +61,7 @@ public class VideoEditor extends AppCompatActivity {
         }
         configureVideoTrimmerButton();
         configureVideoCropperButton();
+        configureVideoFilterButton();
         clickListeners();
     }
 
@@ -147,6 +148,19 @@ public class VideoEditor extends AppCompatActivity {
                 Intent toCropper =new Intent(VideoEditor.this, VideoCropper.class);
                 toCropper.putExtra("uri", uri.toString());
                 startActivity(toCropper);
+
+            }
+        });
+    }
+
+    public void configureVideoFilterButton(){
+        ImageButton IEButton =  findViewById(R.id.video_filter_button);
+        IEButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toFilter =new Intent(VideoEditor.this, VideoFilter.class);
+                toFilter.putExtra("uri", uri.toString());
+                startActivity(toFilter);
 
             }
         });

@@ -44,7 +44,7 @@ public class VideoAudioChange extends AppCompatActivity {
     String [] command;
     boolean vidPlaying = false;
     int vidDuration;
-    String fileName, audioUriPath;
+    String fileName, audioUriPath,audioUriPathReal;
     File destination;
     FFmpeg ff;
 
@@ -123,8 +123,14 @@ public class VideoAudioChange extends AppCompatActivity {
                             String fileExtension = ".mp4";
                             destination = new File(destFolder, fileName + fileExtension);
                             try {
-
-                                createFfmpegCommand(getPathFromUri(getApplicationContext(), vidUri), getRealPathFromURI(audioUri));
+                                audioUriPath = audioUri.getPath();
+                                if(audioUriPath.contains("/storage")) {
+                                    audioUriPathReal = audioUriPath.substring(audioUriPath.indexOf("/storage"), audioUriPath.length());
+                                }
+                                else if(audioUriPath.contains("/mnt")){
+                                    audioUriPathReal = audioUriPath.substring(audioUriPath.indexOf("/mnt"), audioUriPath.length());
+                                }
+                                createFfmpegCommand(getPathFromUri(getApplicationContext(), vidUri), audioUriPathReal);
                                 executeCommand(command);
                             } catch (FFmpegCommandAlreadyRunningException e) {
                                 e.printStackTrace();

@@ -61,11 +61,10 @@
 
 
                 <ImageButton
-                    android:id="@+id/trim_button"
+                    android:id="@+id/video_trim_button"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-
                     android:minWidth="75dp"
                     android:minHeight="75dp"
                     android:src="@drawable/icon_scissors" />
@@ -81,7 +80,7 @@
                     android:src="@drawable/icon_crop" />
 
                 <ImageButton
-                    android:id="@+id/merge_button"
+                    android:id="@+id/video_merge_button"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -102,15 +101,18 @@
                     android:minHeight="75dp"
                     android:src="@drawable/icon_vid_filter"
                     />
+
                 <ImageButton
-                    android:id="@+id/button3"
+                    android:id="@+id/video_audio_change_button"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
 
                     android:minWidth="75dp"
                     android:minHeight="75dp"
-                    />
+                    android:src="@drawable/icon_vid_audio"
+                     />
+
                 <ImageButton
                     android:id="@+id/button4"
                     style="@android:style/Widget.ImageButton"

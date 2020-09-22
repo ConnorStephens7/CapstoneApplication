@@ -83,9 +83,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
         }
     }
+
     private static final int REQUEST_WRITE_PERMISSION = 786;
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_WRITE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

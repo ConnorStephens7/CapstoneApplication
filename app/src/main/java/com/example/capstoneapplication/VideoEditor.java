@@ -62,6 +62,8 @@ public class VideoEditor extends AppCompatActivity {
         configureVideoTrimmerButton();
         configureVideoCropperButton();
         configureVideoFilterButton();
+        configureVideoMergeButton();
+        configureVideoAudioChangeButton();
         clickListeners();
     }
 
@@ -128,7 +130,7 @@ public class VideoEditor extends AppCompatActivity {
     }
 
     public void configureVideoTrimmerButton(){
-        ImageButton IEButton =  findViewById(R.id.trim_button);
+        ImageButton IEButton =  findViewById(R.id.video_trim_button);
         IEButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,8 +168,29 @@ public class VideoEditor extends AppCompatActivity {
         });
     }
 
+    public void configureVideoMergeButton() {
+        ImageButton IEButton = findViewById(R.id.video_merge_button);
+        IEButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toMerge = new Intent(VideoEditor.this, VideoMerge.class);
+                toMerge.putExtra("uri", uri.toString());
+                startActivity(toMerge);
 
+            }
+        });
+    }
 
+        public void configureVideoAudioChangeButton(){
+            ImageButton IEButton =  findViewById(R.id.video_audio_change_button);
+            IEButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent toAudioChange =new Intent(VideoEditor.this, VideoAudioChange.class);
+                    toAudioChange.putExtra("uri", uri.toString());
+                    startActivity(toAudioChange);
 
-
+                }
+            });
+    }
 }

@@ -152,7 +152,6 @@ public class VideoFilter extends AppCompatActivity {
                 ffmpegCommand = new String [] {"-y","-i", inputVideoAbsolutePath, "-filter_complex", "colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131",
                         "-threads", "4","-vcodec", "mpeg4","-r", "18", filterPreviewPath + "1.mp4"};
                 try {
-
                     executeCommand(ffmpegCommand);
                 } catch (FFmpegCommandAlreadyRunningException e) {
                     e.printStackTrace();
@@ -173,7 +172,6 @@ public class VideoFilter extends AppCompatActivity {
                 ffmpegCommand = new String [] {"-y","-i", inputVideoAbsolutePath, "-threads", "4",
                         "-vf", "hue=s=0", "-vcodec", "mpeg4", "-r", "24", filterPreviewPath + "2.mp4"};
                 try {
-
                     executeCommand(ffmpegCommand);
                 } catch (FFmpegCommandAlreadyRunningException e) {
                     e.printStackTrace();
@@ -194,7 +192,6 @@ public class VideoFilter extends AppCompatActivity {
                 ffmpegCommand = new String [] {"-y","-i", inputVideoAbsolutePath, "-threads", "4",
                         "-vf", "negate", "-vcodec", "mpeg4", "-r", "24", filterPreviewPath + "3.mp4"};
                 try {
-
                     executeCommand(ffmpegCommand);
                 } catch (FFmpegCommandAlreadyRunningException e) {
                     e.printStackTrace();

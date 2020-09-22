@@ -230,10 +230,6 @@ public class VideoTrimmer extends AppCompatActivity {
 
             }
 
-
-
-
-
         private String getPathFromUri(Context ctxt, Uri uriContent) {
             Cursor cursor = null;
             try {
@@ -260,9 +256,6 @@ public class VideoTrimmer extends AppCompatActivity {
             menuInflater.inflate(R.menu.trimmer_menu,menu);
             return true;
         }
-
-
-
-    }
+}
 
 

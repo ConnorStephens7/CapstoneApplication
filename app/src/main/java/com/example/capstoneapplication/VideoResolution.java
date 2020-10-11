@@ -3,9 +3,6 @@ package com.example.capstoneapplication;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Rect;
-import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.content.Intent;
 
@@ -34,11 +31,12 @@ import org.florescu.android.rangeseekbar.RangeSeekBar;
 
 import java.io.File;
 
-public class VideoCropper extends AppCompatActivity {
+public class VideoResolution extends AppCompatActivity {
     Uri uri;
     ImageView imgView;
     VideoView vidView;
-    String fileName;
+    boolean vidPlaying;
+    String fileName, inputVideoPath, inputVideoAbsolutePath;
     CropImageView frame;
     File destination;
     RangeSeekBar videoDurBar;
@@ -49,40 +47,38 @@ public class VideoCropper extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_cropper);
-        //vidView = (VideoView) findViewById(R.id.videoView);
+        setContentView(R.layout.activity_video_resolution);
+        vidView = (VideoView) findViewById(R.id.videoView);
         Intent passUri = getIntent();
 
         if (passUri != null) {
-            String videoPath = passUri.getStringExtra("uri");
-            uri = Uri.parse(videoPath);
-            frame = findViewById(R.id.cropImageView);
 
-            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
-            metaRetriever.setDataSource(getApplicationContext(),uri);
-            Bitmap bitmap = metaRetriever.getFrameAtTime(1);
-            if(bitmap!= null){
-                frame.setImageBitmap(bitmap);
-            }
+            inputVideoPath = passUri.getStringExtra("uri");
+            uri = Uri.parse(inputVideoPath);
+            inputVideoAbsolutePath = getPathFromUri(getApplicationContext(),uri);
+            vidPlaying = true;
+            vidView.setVideoURI(uri);
+            vidView.start();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.cropper_menu,menu);
+        menuInflater.inflate(R.menu.res_menu,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
-        if(menuItem.getItemId()==R.id.crop){
-            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(com.example.capstoneapplication.VideoCropper.this);
-            LinearLayout linLay = new LinearLayout(com.example.capstoneapplication.VideoCropper.this);
+        if(menuItem.getItemId()==R.id.res){
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(com.example.capstoneapplication.VideoResolution.this);
+            LinearLayout linLay = new LinearLayout(com.example.capstoneapplication.VideoResolution.this);
             linLay.setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams layPar = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layPar.setMargins(50, 0, 50, 100 );
-            final EditText input = new EditText(com.example.capstoneapplication.VideoCropper.this);
+            final EditText input = new EditText(com.example.capstoneapplication.VideoResolution.this);
             input.setLayoutParams(layPar);
             input.setGravity(Gravity.TOP|Gravity.START);
             input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
@@ -104,7 +100,7 @@ public class VideoCropper extends AppCompatActivity {
 
                     try
                     {
-                        cropVideo();
+                        changeVideoResolution();
                     } catch (FFmpegCommandAlreadyRunningException e) {
                         e.printStackTrace();
                     }
@@ -115,25 +111,21 @@ public class VideoCropper extends AppCompatActivity {
         return super.onOptionsItemSelected(menuItem);
     }
 
-    private void cropVideo() throws FFmpegCommandAlreadyRunningException{
-        Rect cropShape = frame.getCropRect();
-        int width = Math.abs(cropShape.left - cropShape.right);
-        int height = Math.abs(cropShape.top - cropShape.bottom);
-        int leftBound = cropShape.left;
-        int topBound = cropShape.top;
+    private void changeVideoResolution() throws FFmpegCommandAlreadyRunningException{
         String filePath = getPathFromUri(getApplicationContext(),uri);
-        File destFolder = new File("storage/emulated/0" + "/EditingApeCroppedVideos");
+        File destFolder = new File("storage/emulated/0" + "/EditingApeResChangedVideos");
         if (!destFolder.exists()) {
             destFolder.mkdir();
         }
         String fileExtension = ".mp4";
         destination = new File(destFolder, fileName + fileExtension);
-        String cropBounds = ("crop=" + String.valueOf(width) + ":" + String.valueOf(height)+
-                ":"+ String.valueOf(leftBound) + ":" + String.valueOf(topBound));
-        ffmpegCommand = new String [] {"-i", filePath, "-filter:v", cropBounds, "-threads",
-                "5", "-preset", "ultrafast", "-strict", "-2", "-c:a", "copy", destination.toString()};
+        EditText heightEntryBox = findViewById(R.id.editHeight);
+        String height = heightEntryBox.getText().toString();
+        EditText widthEntryBox = findViewById(R.id.editWidth);
+        String width = widthEntryBox.getText().toString();
+        ffmpegCommand = new String [] {"-y", "-i", filePath, "-vf", "scale="+ width + ":" + height, destination.toString()};
 
-        ff= FFmpeg.getInstance(com.example.capstoneapplication.VideoCropper.this);
+        ff= FFmpeg.getInstance(com.example.capstoneapplication.VideoResolution.this);
         executeCommand();
     }
 
@@ -143,7 +135,7 @@ public class VideoCropper extends AppCompatActivity {
 
             @Override
             public void onProgress(String message){
-                Log.i("VideoCropper","Progress");
+                Log.i("VideoResolution","Progress");
             }
 
             @Override
@@ -185,4 +177,3 @@ public class VideoCropper extends AppCompatActivity {
     }
 
 }
-

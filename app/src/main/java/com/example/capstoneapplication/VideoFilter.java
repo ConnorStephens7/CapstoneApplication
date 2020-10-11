@@ -43,7 +43,7 @@ public class VideoFilter extends AppCompatActivity {
     RangeSeekBar videoDurBar;
     String inputVideoPath;
     String inputVideoAbsolutePath;
-    String filterPreviewPath = "storage/emulated/0/EditingApeSnippedVideos/preview";
+    String filterPreviewPath = "storage/emulated/0/EditingApeFilteredVideos/preview";
     FFmpeg ff;
     int filterSelection;
 
@@ -54,6 +54,11 @@ public class VideoFilter extends AppCompatActivity {
         videoDurBar = (RangeSeekBar) findViewById(R.id.scrubBar);
         imgView = (ImageView) findViewById(R.id.pause_icon);
         vidView = (VideoView) findViewById(R.id.videoView);
+
+        File destFolder = new File("storage/emulated/0" + "/EditingApeFilteredVideos");
+        if(!destFolder.exists()) {
+            destFolder.mkdir();
+        }
 
         Intent passUri = getIntent();
         configureGrayScaleButton();
@@ -120,19 +125,19 @@ public class VideoFilter extends AppCompatActivity {
                     File sourceFile =new File("0","0");
                     switch(filterSelection){
                         case 1:
-                            sourceFile= new File("storage/emulated/0/EditingApeSnippedVideos","preview1.mp4");
+                            sourceFile= new File("storage/emulated/0/EditingApeFilteredVideos","preview1.mp4");
                             break;
 
                         case 2:
-                            sourceFile= new File("storage/emulated/0/EditingApeSnippedVideos","preview2.mp4");
+                            sourceFile= new File("storage/emulated/0/EditingApeFilteredVideos","preview2.mp4");
                             break;
 
                         case 3:
-                            sourceFile= new File("storage/emulated/0/EditingApeSnippedVideos","preview3.mp4");
+                            sourceFile= new File("storage/emulated/0/EditingApeFilteredVideos","preview3.mp4");
                             break;
                     }
 
-                    File saved = new File("storage/emulated/0/EditingApeSnippedVideos", fileName);
+                    File saved = new File("storage/emulated/0/EditingApeFilteredVideos", fileName);
                     sourceFile.renameTo(saved);
                 }
             });
@@ -203,6 +208,7 @@ public class VideoFilter extends AppCompatActivity {
 
     private void executeCommand(String [] ffmpegCommand) throws FFmpegCommandAlreadyRunningException {
         final Toast grayToast=Toast. makeText(getApplicationContext(),"Please wait, video filtering, preview will display when finished", Toast. LENGTH_SHORT);
+
         ff.execute(ffmpegCommand, new ExecuteBinaryResponseHandler(){
 
             @Override

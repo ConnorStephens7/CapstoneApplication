@@ -64,6 +64,7 @@ public class VideoEditor extends AppCompatActivity {
         configureVideoFilterButton();
         configureVideoMergeButton();
         configureVideoAudioChangeButton();
+        configureVideoResolutionChangeButton();
         clickListeners();
     }
 
@@ -192,5 +193,18 @@ public class VideoEditor extends AppCompatActivity {
 
                 }
             });
+    }
+
+    public void configureVideoResolutionChangeButton(){
+        ImageButton IEButton =  findViewById(R.id.video_resolution_change_button);
+        IEButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toResChange =new Intent(VideoEditor.this, VideoResolution.class);
+                toResChange.putExtra("uri", uri.toString());
+                startActivity(toResChange);
+
+            }
+        });
     }
 }

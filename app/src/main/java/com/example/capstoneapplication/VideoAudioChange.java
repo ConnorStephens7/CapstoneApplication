@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -17,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,12 +28,8 @@ import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+
 
 public class VideoAudioChange extends AppCompatActivity {
     Uri vidUri,audioUri;
@@ -123,14 +119,9 @@ public class VideoAudioChange extends AppCompatActivity {
                             String fileExtension = ".mp4";
                             destination = new File(destFolder, fileName + fileExtension);
                             try {
-                                audioUriPath = audioUri.getPath();
-                                if(audioUriPath.contains("/storage")) {
-                                    audioUriPathReal = audioUriPath.substring(audioUriPath.indexOf("/storage"), audioUriPath.length());
-                                }
-                                else if(audioUriPath.contains("/mnt")){
-                                    audioUriPathReal = audioUriPath.substring(audioUriPath.indexOf("/mnt"), audioUriPath.length());
-                                }
-                                createFfmpegCommand(getPathFromUri(getApplicationContext(), vidUri), audioUriPathReal);
+                                audioUriPath = getAudioPathFromURI(audioUri);
+
+                                createFfmpegCommand(getPathFromUri(getApplicationContext(), vidUri), audioUriPath);
                                 executeCommand(command);
                             } catch (FFmpegCommandAlreadyRunningException e) {
                                 e.printStackTrace();
@@ -152,9 +143,11 @@ public class VideoAudioChange extends AppCompatActivity {
 
 
     public void selectAudio(View v){
-        Intent storageAccess = new Intent(Intent.ACTION_GET_CONTENT);
-        storageAccess.setType("audio/*");
-        startActivityForResult(storageAccess,1);
+        Intent intent;
+        intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("audio/mpeg");
+        startActivityForResult(Intent.createChooser(intent, "Pick Background Sound"), 1);
     }
     @Override
     protected void onActivityResult(int reqCode, int resCode, Intent data)
@@ -221,6 +214,14 @@ public class VideoAudioChange extends AppCompatActivity {
             }
         }
     }
+    private String getAudioPathFromURI(Uri contentUri) {
+        String[] media = { MediaStore.Audio.Media.DATA };
+        CursorLoader loader = new CursorLoader(getApplicationContext(), contentUri, media, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
 
 
 
@@ -231,4 +232,5 @@ public class VideoAudioChange extends AppCompatActivity {
         menuInflater.inflate(R.menu.audio_change_menu,menu);
         return true;
     }
+
 }

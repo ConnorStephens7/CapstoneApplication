@@ -65,6 +65,8 @@ public class VideoEditor extends AppCompatActivity {
         configureVideoMergeButton();
         configureVideoAudioChangeButton();
         configureVideoResolutionChangeButton();
+        configureVideoFromImagesButton();
+        configureVideoCollageButton();
         clickListeners();
     }
 
@@ -203,6 +205,31 @@ public class VideoEditor extends AppCompatActivity {
                 Intent toResChange =new Intent(VideoEditor.this, VideoResolution.class);
                 toResChange.putExtra("uri", uri.toString());
                 startActivity(toResChange);
+
+            }
+        });
+    }
+
+    public void configureVideoFromImagesButton(){
+        ImageButton IEButton =  findViewById(R.id.video_from_images_button);
+        IEButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toVFI =new Intent(VideoEditor.this, VideoFromImages.class);
+                toVFI.putExtra("uri", uri.toString());
+                startActivity(toVFI);
+
+            }
+        });
+    }
+    public void configureVideoCollageButton(){
+        ImageButton IEButton =  findViewById(R.id.video_collage_button);
+        IEButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toVidCollage =new Intent(VideoEditor.this, VideoCollage.class);
+                toVidCollage.putExtra("uri", uri.toString());
+                startActivity(toVidCollage);
 
             }
         });

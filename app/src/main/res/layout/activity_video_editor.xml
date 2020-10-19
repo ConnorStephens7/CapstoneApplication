@@ -124,13 +124,24 @@
                     android:src="@drawable/icon_vid_res"
                     />
                 <ImageButton
-                    android:id="@+id/button5"
+                    android:id="@+id/video_from_images_button"
                     style="@android:style/Widget.ImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
 
                     android:minWidth="75dp"
                     android:minHeight="75dp"
+                    android:src="@drawable/icon_vfi"
+                    />
+                <ImageButton
+                    android:id="@+id/video_collage_button"
+                    style="@android:style/Widget.ImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+
+                    android:minWidth="75dp"
+                    android:minHeight="75dp"
+                    android:src="@drawable/icon_vid_collage"
                     />
 
             </LinearLayout>

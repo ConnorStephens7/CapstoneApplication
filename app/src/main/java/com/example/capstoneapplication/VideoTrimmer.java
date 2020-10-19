@@ -136,7 +136,7 @@ public class VideoTrimmer extends AppCompatActivity {
             return String.format("%02d",hours) +":" + String.format("%02d", minutes) +":"+ String.format("%02d", secondsRem);
         }
 
-        //setting up menus for saving files and changing filenames
+        //setting up menu for saving files and changing filename
         @Override
         public boolean onOptionsItemSelected(MenuItem menuItem){
             if(menuItem.getItemId()==R.id.trim){

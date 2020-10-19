@@ -21,8 +21,8 @@
         <activity android:name=".VideoMerge"></activity>
         <activity android:name=".VideoAudioChange"></activity>
         <activity android:name=".VideoResolution"></activity>
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity android:name=".VideoFromImages"></activity>
+        <activity android:name=".VideoCollage"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

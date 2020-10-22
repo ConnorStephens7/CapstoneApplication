@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,9 +10,9 @@
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="593dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="138dp" />
+        android:layout_marginBottom="251dp" />
 
     <ImageView
         android:id="@+id/pause_icon"
@@ -71,4 +72,22 @@
 
 
     </RelativeLayout>
+
+    <com.aghajari.axvideotimelineview.AXVideoTimelineView
+        android:id="@+id/axView"
+        app:color="@android:color/white"
+        app:iconColor="@android:color/holo_blue_dark"
+        app:playLine="true"
+        app:timelineColor="@android:color/holo_blue_dark"
+        android:layout_width="389dp"
+        android:layout_height="65dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="507dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="158dp" />
 </RelativeLayout>

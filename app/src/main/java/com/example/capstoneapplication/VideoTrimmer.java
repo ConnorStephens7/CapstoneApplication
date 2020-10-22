@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.aghajari.axvideotimelineview.AXVideoTimelineView;
+import com.aghajari.axvideotimelineview.AXTimelineViewListener;
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
@@ -45,7 +47,11 @@ public class VideoTrimmer extends AppCompatActivity {
         TextView clockLeft, clockRight;
         boolean vidPlaying = false;
         int vidDuration;
-        String fileName, inputVideoPath;
+
+
+
+
+    String fileName, inputVideoPath;
         String[] command;
         File destination;
         FFmpeg ff;
@@ -62,6 +68,8 @@ public class VideoTrimmer extends AppCompatActivity {
             imgView = (ImageView) findViewById(R.id.pause_icon);
             vidView = (VideoView) findViewById(R.id.videoView);
 
+            AXVideoTimelineView axVideoTimeline = findViewById(R.id.axView);
+
             Intent passUri = getIntent();
             if(passUri != null){
 
@@ -70,6 +78,7 @@ public class VideoTrimmer extends AppCompatActivity {
                 vidPlaying= true;
                 vidView.setVideoURI(uri);
                 vidView.start();
+                axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),uri));
 
             }
             clickListeners();

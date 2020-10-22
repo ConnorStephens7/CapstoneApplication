@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -25,20 +27,18 @@ import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Arrays;
+
 
 public class VideoCollage extends AppCompatActivity implements View.OnClickListener{
     Uri uri, videoUri;
     String[] command, videoPaths;
     VideoView videoView1, videoView2, videoView3, videoView4;
     String fileName;
-    File destination, imagesInput;
+    File destination;
     FFmpeg ff;
+    RadioButton hButton, vButton, sButton;
+    RadioGroup collageOptions;
     int videoCount, vidViewID;
     int [] frameHistory;
 
@@ -59,6 +59,11 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
         videoView2 = findViewById(R.id.video2);
         videoView3 = findViewById(R.id.video3);
         videoView4 = findViewById(R.id.video4);
+        hButton = findViewById(R.id.horizontal_button);
+        vButton = findViewById(R.id.vertical_button);
+        sButton = findViewById(R.id.square_button);
+        collageOptions = findViewById(R.id.radioGroup);
+
 
         String path = "android.resource://" + getPackageName() + "/" + R.raw.add_video_symbol;
         videoView1.setVideoURI(Uri.parse(path));
@@ -105,9 +110,18 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem menuItem){
         if(menuItem.getItemId()==R.id.VFI_save) {
             if (videoCount == 0 | videoCount == 1) {
-                final Toast toast = Toast.makeText(getApplicationContext(), "Need at least 2 videos for collage", Toast.LENGTH_SHORT);
-                toast.show();
+                final Toast tooFewVidsWarning = Toast.makeText(getApplicationContext(), "Need at least 2 videos for collage", Toast.LENGTH_SHORT);
+                tooFewVidsWarning.show();
             }
+            else if(videoCount != 4 && sButton.isChecked()) {
+                final Toast squareWarning = Toast.makeText(getApplicationContext(), "Need 4 videos for square collage", Toast.LENGTH_SHORT);
+                squareWarning.show();
+            }
+            else if(collageOptions.getCheckedRadioButtonId() ==-1){
+                final Toast noOptionSelectedWarning = Toast.makeText(getApplicationContext(), "Please select a collage type", Toast.LENGTH_SHORT);
+                noOptionSelectedWarning.show();
+            }
+
             else {
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(com.example.capstoneapplication.VideoCollage.this);
 
@@ -141,7 +155,12 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
                         String fileExtension = ".mp4";
                         destination = new File(destFolder, fileName + fileExtension);
                         if(videoCount ==2) {
-                            command = new String[]{"-y", "-i",videoPaths[0],"-i",videoPaths[1],"-filter_complex","[0:v]scale=640:480,setsar=1[l];[1:v]scale=640:480,setsar=1[r];[l][r]hstack=shortest=1","-c:v","libx264","-crf","23","-preset","veryfast",destination.toString()};
+                            if(hButton.isChecked()) {
+                                command = new String[]{"-y", "-i", videoPaths[0], "-i", videoPaths[1], "-filter_complex", "[0:v]scale=640:480,setsar=1[l];[1:v]scale=640:480,setsar=1[r];[l][r]hstack=shortest=1", "-c:v", "libx264", "-crf", "23", "-preset", "veryfast", "-shortest", destination.toString()};
+                            }
+                            if(vButton.isChecked()){
+                                command = new String[]{"-y", "-i", videoPaths[0], "-i", videoPaths[1], "-filter_complex", "[0:v]scale=720:480,setsar=1[l];[1:v]scale=720:480,setsar=1[r];[l][r]vstack=shortest=1,scale=720:960", "-c:v", "libx264", "-crf", "23", "-preset", "veryfast", "-shortest", destination.toString()};
+                            }
                             try {
                                 executeCommand(command);
 
@@ -150,9 +169,39 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
                             }
                         }
                         else if(videoCount==3) {
+                            if(hButton.isChecked()) {
+                                command = new String[]{"-y", "-i", videoPaths[0], "-i", videoPaths[1], "-i", videoPaths[2], "-filter_complex", "[0:v]scale=640:480,setsar=1[0v];[1:v]scale=640:480,setsar=1[1v];[2:v]scale=640:480,setsar=1[2v];[0v][1v][2v]hstack=inputs=3:shortest=1,scale=1920:480", "-c:v", "libx264", "-crf", "23", "-preset", "veryfast", "-shortest", destination.toString()};
+                            }
+                            if(vButton.isChecked()) {
+                                command = new String[]{"-y", "-i", videoPaths[0], "-i", videoPaths[1], "-i", videoPaths[2], "-filter_complex", "[0:v]scale=640:480,setsar=1[0v];[1:v]scale=640:480,setsar=1[1v];[2:v]scale=640:480,setsar=1[2v];[0v][1v][2v]vstack=inputs=3:shortest=1,scale=640:1440", "-c:v", "libx264", "-crf", "23", "-preset", "veryfast", "-shortest", destination.toString()};
+                            }
+                            try {
+                                executeCommand(command);
+
+                            } catch (FFmpegCommandAlreadyRunningException e) {
+                                e.printStackTrace();
+                            }
 
                         }
                         else if(videoCount ==4){
+                            if(hButton.isChecked()){
+                                command = new String[]{"-y", "-i", videoPaths[0], "-i", videoPaths[1], "-i", videoPaths[2], "-i", videoPaths[3], "-filter_complex", "[0:v]scale=640:480,setsar=1[0v];[1:v]scale=640:480,setsar=1[1v];[2:v]scale=640:480,setsar=1[2v];[3:v]scale=640:480,setsar=1[3v];[0v][1v][2v][3v]hstack=inputs=4:shortest=1,scale=2560:480", "-c:v", "libx264", "-crf", "23", "-preset", "veryfast", "-shortest", destination.toString()};
+                            }
+                            if(vButton.isChecked()){
+                                command = new String[]{"-y", "-i", videoPaths[0], "-i", videoPaths[1], "-i", videoPaths[2], "-i", videoPaths[3], "-filter_complex", "[0:v]scale=640:480,setsar=1[0v];[1:v]scale=640:480,setsar=1[1v];[2:v]scale=640:480,setsar=1[2v];[3:v]scale=640:480,setsar=1[3v];[0v][1v][2v][3v]vstack=inputs=4:shortest=1,scale=640:1920", "-c:v", "libx264", "-crf", "23", "-preset", "veryfast", "-shortest", destination.toString()};
+                            }
+                            if(sButton.isChecked()) {
+                                command = new String[]{"-y", "-i", videoPaths[0], "-i", videoPaths[1], "-i", videoPaths[2], "-i", videoPaths[3], "-filter_complex",
+                                        "nullsrc=size=640x480 [base]; [0:v] setpts=PTS-STARTPTS, scale=320x240 [upperleft]; [1:v] setpts=PTS-STARTPTS, scale=320x240 [upperright]; " +
+                                                "[2:v] setpts=PTS-STARTPTS, scale=320x240 [lowerleft]; [3:v] setpts=PTS-STARTPTS, scale=320x240 [lowerright]; [base][upperleft] overlay=shortest=1 [tmp1]; [tmp1][upperright] overlay=shortest=1:x=320 [tmp2]; [tmp2][lowerleft] overlay=shortest=1:y=240 [tmp3]; [tmp3][lowerright] overlay=shortest=1:x=320:y=240",
+                                        "-c:v", "libx264", "-shortest", destination.toString()};
+                            }
+                            try {
+                                executeCommand(command);
+
+                            } catch (FFmpegCommandAlreadyRunningException e) {
+                                e.printStackTrace();
+                            }
 
                         }
                     }
@@ -190,12 +239,15 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(reqCode,resCode,data);
         if(resCode == RESULT_OK && reqCode == 100){
             videoUri = data.getData();
-            videoPaths[videoCount] = getPathFromUri(getApplicationContext(),videoUri);
             if (!contains(frameHistory, vidViewID)) {
                 frameHistory[videoCount] = vidViewID;
+                videoPaths[videoCount] = getPathFromUri(getApplicationContext(),videoUri);
                 videoCount++;//add to videoCount if an unused videoView is being set by user
                 }
+            else if(contains(frameHistory, vidViewID)){
+                videoPaths[vidViewID-1] = getPathFromUri(getApplicationContext(),videoUri);
             }
+        }
         switch (vidViewID){
             case 1:
                 videoView1.setVideoURI(videoUri);
@@ -216,8 +268,6 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
 
         }
     }
-
-
 
     public void resumeVideoViews(){
         videoView1.start();

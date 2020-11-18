@@ -23,6 +23,11 @@
         <activity android:name=".VideoResolution"></activity>
         <activity android:name=".VideoFromImages"></activity>
         <activity android:name=".VideoCollage"></activity>
+        <activity android:name=".ImageCropper"></activity>
+        <activity android:name=".ImageFilter"></activity>
+        <activity android:name=".ImageBCSAdjustment"></activity>
+        <activity android:name=".ImageRotate"></activity>
+        <activity android:name=".ImageCollage"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

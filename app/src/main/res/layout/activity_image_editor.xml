@@ -24,69 +24,70 @@
         app:layout_constraintVertical_bias="0.281"
         app:srcCompat="@android:color/darker_gray" />
 
+
     <HorizontalScrollView
         android:layout_width="435dp"
         android:layout_height="72dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="660dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:background="@android:color/darker_gray"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/trim_button"
+                android:id="@+id/image_cropper_button"
                 style="@android:style/Widget.ImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
 
                 android:minWidth="75dp"
                 android:minHeight="75dp"
-                android:src="@drawable/icon_scissors" />
+                android:src="@drawable/icon_crop" />
 
             <ImageButton
-                android:id="@+id/button"
+                android:id="@+id/image_filter_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:src="@drawable/icon_vid_filter" />
+
+            <ImageButton
+                android:id="@+id/image_rotate_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:src="@drawable/icon_rotate" />
+
+            <ImageButton
+                android:id="@+id/image_collage_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:src="@drawable/icon_vid_collage" />
+
+            <ImageButton
+                android:id="@+id/image_bcs_button"
                 style="@android:style/Widget.ImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
 
                 android:minWidth="75dp"
-                android:minHeight="75dp" />
-
-            <ImageButton
-                android:id="@+id/button1"
-                style="@android:style/Widget.ImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-
-                android:minWidth="75dp"
-                android:minHeight="75dp" />
-
-            <ImageButton
-                android:id="@+id/button2"
-                style="@android:style/Widget.ImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-
-                android:minWidth="75dp"
-                android:minHeight="75dp" />
-
-            <ImageButton
-                android:id="@+id/button3"
-                style="@android:style/Widget.ImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-
-                android:minWidth="75dp"
-                android:minHeight="75dp" />
+                android:minHeight="75dp"
+                android:src="@drawable/icon_bcs" />
 
             <ImageButton
                 android:id="@+id/button4"
@@ -109,22 +110,4 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-
-    <Button
-        android:id="@+id/saveImage"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Save"
-
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

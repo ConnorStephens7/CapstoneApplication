@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="409dp"
+        android:layout_height="473dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.047" />
+
+    <RadioGroup
+        android:id="@+id/group"
+        android:layout_width="255dp"
+        android:layout_height="127dp"
+        android:layout_marginBottom="52dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/clockwise_button"
+            android:layout_width="292dp"
+            android:layout_height="30dp"
+            android:text="Rotate 90° Clockwise" />
+
+        <RadioButton
+            android:id="@+id/counterclockwise_button"
+            android:layout_width="293dp"
+            android:layout_height="30dp"
+            android:text="Rotate 90° Counterclockwise" />
+
+        <RadioButton
+            android:id="@+id/flipv_button"
+            android:layout_width="175dp"
+            android:layout_height="30dp"
+            android:text="Rotate 180°" />
+
+        <RadioButton
+            android:id="@+id/fliph_button"
+            android:layout_width="175dp"
+            android:layout_height="30dp"
+            android:text="Flip Horizontally" />
+    </RadioGroup>
+</android.support.constraint.ConstraintLayout>

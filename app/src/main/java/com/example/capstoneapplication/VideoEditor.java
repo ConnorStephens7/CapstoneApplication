@@ -1,14 +1,17 @@
 package com.example.capstoneapplication;
 
 
+import android.content.Context;
 import android.content.Intent;
 
+import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Handler;
 
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
@@ -21,6 +24,8 @@ import android.widget.SeekBar;
 import android.widget.VideoView;
 
 
+import com.aghajari.axvideotimelineview.AXTimelineViewListener;
+import com.aghajari.axvideotimelineview.AXVideoTimelineView;
 
 import java.io.File;
 
@@ -29,13 +34,9 @@ public class VideoEditor extends AppCompatActivity {
     Uri uri;
     ImageView imgView;
     VideoView vidView;
-    SeekBar videoDurBar;
 
     boolean vidPlaying = false;
-    int vidDuration;
-    String fileName, inputVideoPath;
-    String[] command;
-    File destination;
+    AXVideoTimelineView axVideoTimeline;
 
 
 
@@ -45,9 +46,9 @@ public class VideoEditor extends AppCompatActivity {
         setContentView(R.layout.activity_video_editor);
 
 
-        videoDurBar= (SeekBar) findViewById(R.id.seekBarVid);
         imgView = (ImageView) findViewById(R.id.pause_icon);
         vidView = (VideoView) findViewById(R.id.videoView);
+        axVideoTimeline = findViewById(R.id.AXVideoTimelineView5);
 
         Intent passUri = getIntent();
         if(passUri != null){
@@ -57,6 +58,7 @@ public class VideoEditor extends AppCompatActivity {
             vidPlaying= true;
             vidView.setVideoURI(uri);
             vidView.start();
+            axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),uri));
 
         }
         configureVideoTrimmerButton();
@@ -70,65 +72,67 @@ public class VideoEditor extends AppCompatActivity {
         clickListeners();
     }
 
-    private void clickListeners(){
+    private void clickListeners() {
         //click listener for the pause button
-        imgView.setOnClickListener(new View.OnClickListener(){
+        imgView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                if(vidPlaying) {
+            public void onClick(View view) {
+                if (vidPlaying) {
                     imgView.setImageResource(R.drawable.icon_play);//changes icon to play button when paused
                     vidView.pause();
                     vidPlaying = false;
-                }
-                else{//if was paused, play on user click
+                } else {//if was paused, play on user click
                     vidView.start();
                     imgView.setImageResource(R.drawable.icon_pause);
-                    vidPlaying= true;
+                    vidPlaying = true;
                 }
             }
         });
         vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
-            public void onPrepared(MediaPlayer mp) {
+            public void onPrepared(final MediaPlayer mp) {
                 vidView.start();
-                vidDuration =mp.getDuration()/1000; //get vid time in seconds since getDuration returns ms
-                //clockLeft.setText("00:00:00");
-                //clockRight.setText(getClockValue(vidDuration));
+                AXTimelineViewListener axTimelineViewListener = new AXTimelineViewListener() {
+                    @Override
+                    public void onLeftProgressChanged(float progress) {
+                        int dur = mp.getDuration();
+                        float prog = axVideoTimeline.getLeftProgress();
+                        float seekTo = dur * prog;
+                        int time = (int) seekTo;
+                        vidView.seekTo(time);
+
+                    }
+
+                    @Override
+                    public void onRightProgressChanged(float progress) {
+
+                    }
+
+                    @Override
+                    public void onDurationChanged(long Duration) {
+
+                    }
+
+                    @Override
+                    public void onPlayProgressChanged(float progress) {
+                        int dur = mp.getDuration();
+                        float prog = axVideoTimeline.getPlayProgress();
+                        float seekTo = dur * prog;
+                        int time = (int) seekTo;
+                        vidView.seekTo(time);
+                    }
+
+                    @Override
+                    public void onDraggingStateChanged(boolean isDragging) {
+
+                    }
+                };
+                axVideoTimeline.setListener(axTimelineViewListener);
                 mp.setLooping(true);
 
-                //setting bounds for the video duration snipping bar
 
-                videoDurBar.setMax(vidDuration);
-                videoDurBar.setEnabled(true);
-                videoDurBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-
-                    }
-
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        if(vidView != null && fromUser){
-                            vidView.seekTo(progress * 1000);
-                        }
-                    }
-                });
-                Handler vidHandler = new Handler();
-                vidHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(vidView != null){
-                            int currentPos = vidView.getCurrentPosition()/1000;
-                            videoDurBar.setProgress(currentPos);
-                        }
-                    }
-                },1000);
             }
+
         });
     }
 
@@ -233,5 +237,25 @@ public class VideoEditor extends AppCompatActivity {
 
             }
         });
+    }
+
+    private String getPathFromUri(Context ctxt, Uri uriContent) {
+        Cursor cursor = null;
+        try {
+            String[] project = {MediaStore.Images.Media.DATA};
+            cursor = ctxt.getContentResolver().query(uriContent, project, null, null, null);
+            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+            cursor.moveToFirst();
+            return cursor.getString(col_index);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return "";
+        }
+        finally{
+            if (cursor!=null){
+                cursor.close();
+            }
+        }
     }
 }

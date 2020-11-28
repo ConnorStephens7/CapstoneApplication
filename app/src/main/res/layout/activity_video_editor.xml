@@ -8,7 +8,7 @@
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="557dp"
+        android:layout_height="489dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -23,21 +23,35 @@
 
     <ImageView
         android:id="@+id/pause_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="62dp"
+        android:layout_height="55dp"
 
         android:layout_alignStart="@+id/videoView"
         android:layout_alignLeft="@+id/videoView"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="190dp"
-        android:layout_marginLeft="190dp"
-        android:layout_marginTop="579dp"
-        android:layout_marginEnd="197dp"
-        android:layout_marginRight="197dp"
-        android:layout_marginBottom="616dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="180dp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="586dp"
+        android:layout_marginEnd="169dp"
+        android:layout_marginRight="169dp"
+        android:layout_marginBottom="89dp"
         android:src="@drawable/icon_pause" />
+
+    <com.aghajari.axvideotimelineview.AXVideoTimelineView
+        android:id="@+id/AXVideoTimelineView5"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="497dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="169dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -151,19 +165,5 @@
 
 
     </RelativeLayout>
-
-    <SeekBar
-        android:id="@+id/seekBarVid"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="390dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="108dp"
-        android:max="10"
-        android:progress="3" />
 
 </RelativeLayout>

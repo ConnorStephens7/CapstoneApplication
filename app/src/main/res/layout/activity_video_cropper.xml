@@ -8,6 +8,16 @@
     android:orientation="vertical">
 
 
+        <com.aghajari.axvideotimelineview.AXVideoTimelineView
+            android:id="@+id/AXVideoTimelineView4"
+            android:layout_width="390dp"
+            android:layout_height="78dp"
+            android:layout_marginTop="13dp"
+            custom:layout_constraintBottom_toBottomOf="parent"
+            custom:layout_constraintEnd_toEndOf="parent"
+            custom:layout_constraintStart_toStartOf="parent"
+            custom:layout_constraintTop_toBottomOf="@+id/cropImageView" />
+
         <com.theartofdev.edmodo.cropper.CropImageView
             android:id="@+id/cropImageView"
             android:layout_width="395dp"
@@ -18,12 +28,9 @@
             custom:layout_constraintHorizontal_bias="0.494"
             custom:layout_constraintStart_toStartOf="parent"
             custom:layout_constraintTop_toTopOf="parent"
-            custom:layout_constraintVertical_bias="0.417" />
+            custom:layout_constraintVertical_bias="0.417">
 
-
-
-
-
+        </com.theartofdev.edmodo.cropper.CropImageView>
 
 
 </android.support.constraint.ConstraintLayout>

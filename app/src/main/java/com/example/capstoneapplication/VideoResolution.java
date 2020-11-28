@@ -3,6 +3,7 @@ package com.example.capstoneapplication;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.content.Intent;
 
@@ -17,17 +18,19 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
 
+import com.aghajari.axvideotimelineview.AXTimelineViewListener;
+import com.aghajari.axvideotimelineview.AXVideoTimelineView;
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 import com.theartofdev.edmodo.cropper.CropImageView;
-
-import org.florescu.android.rangeseekbar.RangeSeekBar;
 
 import java.io.File;
 
@@ -37,10 +40,10 @@ public class VideoResolution extends AppCompatActivity {
     VideoView vidView;
     boolean vidPlaying;
     String fileName, inputVideoPath, inputVideoAbsolutePath;
-    CropImageView frame;
     File destination;
-    RangeSeekBar videoDurBar;
+    ImageView pauseIcon;
     String [] ffmpegCommand;
+    AXVideoTimelineView axVideoTimeline;
     FFmpeg ff;
 
 
@@ -49,6 +52,8 @@ public class VideoResolution extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_resolution);
         vidView = (VideoView) findViewById(R.id.videoView);
+        pauseIcon = findViewById(R.id.pause_icon);
+        axVideoTimeline = findViewById(R.id.AXVideoTimelineView3);
         Intent passUri = getIntent();
 
         if (passUri != null) {
@@ -59,7 +64,73 @@ public class VideoResolution extends AppCompatActivity {
             vidPlaying = true;
             vidView.setVideoURI(uri);
             vidView.start();
+            axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),uri));
         }
+        clickListeners();
+    }
+    private void clickListeners() {
+        //click listener for the pause button
+        pauseIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (vidPlaying) {
+                    pauseIcon.setImageResource(R.drawable.icon_play);//changes icon to play button when paused
+                    vidView.pause();
+
+                    vidPlaying = false;
+                } else {//if was paused, play on user click
+                    vidView.start();
+                    pauseIcon.setImageResource(R.drawable.icon_pause);
+                    vidPlaying = true;
+                }
+            }
+        });
+        vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(final MediaPlayer mp) {
+                vidView.start();
+                AXTimelineViewListener axTimelineViewListener = new AXTimelineViewListener() {
+                    @Override
+                    public void onLeftProgressChanged(float progress) {
+                        int dur = mp.getDuration();
+                        float prog = axVideoTimeline.getLeftProgress();
+                        float seekTo = dur * prog;
+                        int time = (int) seekTo;
+                        vidView.seekTo(time);
+                    }
+
+                    @Override
+                    public void onRightProgressChanged(float progress) {
+
+                    }
+
+                    @Override
+                    public void onDurationChanged(long Duration) {
+
+                    }
+
+                    @Override
+                    public void onPlayProgressChanged(float progress) {
+                        int dur = mp.getDuration();
+                        float prog = axVideoTimeline.getPlayProgress();
+                        float seekTo = dur * prog;
+                        int time = (int) seekTo;
+                        vidView.seekTo(time);
+                    }
+
+                    @Override
+                    public void onDraggingStateChanged(boolean isDragging) {
+
+                    }
+                };
+                axVideoTimeline.setListener(axTimelineViewListener);
+                mp.setLooping(true);
+
+
+
+            }
+
+        });
     }
 
 

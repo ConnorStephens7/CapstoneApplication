@@ -32,10 +32,9 @@
         android:src="@drawable/icon_pause"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/videoView"
-        app:layout_constraintVertical_bias="0.823" />
+        app:layout_constraintVertical_bias="0.883" />
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
@@ -51,7 +50,7 @@
         app:layout_constraintVertical_bias="0.991">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -59,39 +58,101 @@
             <ImageButton
                 android:id="@+id/sepia_button"
                 style="@android:style/Widget.ImageButton"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
 
                 android:minWidth="75dp"
                 android:minHeight="75dp"
-                android:src="@drawable/icon_scissors" />
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_sepia" />
 
             <ImageButton
                 android:id="@+id/grayscale_button"
                 style="@android:style/Widget.ImageButton"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
 
                 android:minWidth="75dp"
                 android:minHeight="75dp"
-                android:src="@drawable/icon_crop" />
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_bw" />
 
             <ImageButton
-                android:id="@+id/invert_button"
+                android:id="@+id/negate_button"
                 style="@android:style/Widget.ImageButton"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:minWidth="75dp"
                 android:minHeight="75dp"
                 android:padding="20dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/merge_icon" />
+                android:src="@drawable/icon_negate" />
+
+            <ImageButton
+                android:id="@+id/vignette_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_vignette" />
+
+            <ImageButton
+                android:id="@+id/sobel_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="76dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_sobel" />
+
+            <ImageButton
+                android:id="@+id/fastmo_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="76dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_fast" />
+
+            <ImageButton
+                android:id="@+id/slowmo_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="76dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_slow" />
 
 
         </LinearLayout>
 
 
     </HorizontalScrollView>
+
+    <com.aghajari.axvideotimelineview.AXVideoTimelineView
+        android:id="@+id/AXVideoTimelineView"
+        android:layout_width="412dp"
+        android:layout_height="58dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/videoView"
+        app:layout_constraintVertical_bias="0.067" />
 
 </android.support.constraint.ConstraintLayout>

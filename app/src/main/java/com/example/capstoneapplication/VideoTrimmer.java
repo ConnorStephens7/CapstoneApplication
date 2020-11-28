@@ -45,6 +45,7 @@ public class VideoTrimmer extends AppCompatActivity {
         VideoView vidView;
         RangeSeekBar videoDurBar;
         TextView clockLeft, clockRight;
+        AXVideoTimelineView axVideoTimeline;
         boolean vidPlaying = false;
         int vidDuration;
 
@@ -64,12 +65,10 @@ public class VideoTrimmer extends AppCompatActivity {
 
             clockLeft = (TextView) findViewById(R.id.leftClock);
             clockRight = (TextView) findViewById(R.id.rightClock);
-            videoDurBar= (RangeSeekBar) findViewById(R.id.scrubBar);
+
             imgView = (ImageView) findViewById(R.id.pause_icon);
             vidView = (VideoView) findViewById(R.id.videoView);
-
-            AXVideoTimelineView axVideoTimeline = findViewById(R.id.axView);
-
+            axVideoTimeline = findViewById(R.id.axView);
             Intent passUri = getIntent();
             if(passUri != null){
 
@@ -80,8 +79,11 @@ public class VideoTrimmer extends AppCompatActivity {
                 vidView.start();
                 axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),uri));
 
+
             }
-            clickListeners();
+        clickListeners();
+
+
         }
 
         private void clickListeners(){
@@ -103,38 +105,60 @@ public class VideoTrimmer extends AppCompatActivity {
             });
             vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
-                public void onPrepared(MediaPlayer mp) {
+                public void onPrepared(final MediaPlayer mp) {
                     vidView.start();
+                    AXTimelineViewListener axTimelineViewListener = new AXTimelineViewListener() {
+                        @Override
+                        public void onLeftProgressChanged(float progress) {
+                            int dur = mp.getDuration();
+                            float prog = axVideoTimeline.getLeftProgress();
+                            float seekTo = dur * prog;
+                            int time = (int) seekTo;
+                            vidView.seekTo(time);
+                            clockLeft.setText(getClockValue(time/1000));
+
+                        }
+
+                        @Override
+                        public void onRightProgressChanged(float progress) {
+                            int dur = mp.getDuration();
+                            float prog = axVideoTimeline.getRightProgress();
+                            float seekTo = dur * prog;
+                            int time = (int) seekTo;
+                            clockRight.setText(getClockValue(time/1000));
+                        }
+
+                        @Override
+                        public void onDurationChanged(long Duration) {
+
+                        }
+
+                        @Override
+                        public void onPlayProgressChanged(float progress) {
+                            int dur = mp.getDuration();
+                            float prog = axVideoTimeline.getPlayProgress();
+                            float seekTo = dur * prog;
+                            int time = (int) seekTo;
+                            vidView.seekTo(time);
+                        }
+
+                        @Override
+                        public void onDraggingStateChanged(boolean isDragging) {
+
+                        }
+                    };
+                    axVideoTimeline.setListener(axTimelineViewListener);
                     vidDuration =mp.getDuration()/1000; //get vid time in seconds since getDuration returns ms
                     clockLeft.setText("00:00:00");
                     clockRight.setText(getClockValue(vidDuration));
                     mp.setLooping(true);
 
-                    //setting bounds for the video duration snipping bar
-                    videoDurBar.setSelectedMaxValue(vidDuration);
-                    videoDurBar.setSelectedMinValue(0);
-                    videoDurBar.setRangeValues(0, vidDuration);
 
-                    videoDurBar.setEnabled(true);
-                    videoDurBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
-                        @Override
-                        public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Object minValue, Object maxValue) {
-                            vidView.seekTo((int) minValue*1000);
-                            clockLeft.setText(getClockValue((int)bar.getSelectedMinValue()));
-                            clockRight.setText(getClockValue((int)bar.getSelectedMaxValue()));
-                        }
-                    });
-                    Handler vidHandler = new Handler();
-                    vidHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(vidView.getCurrentPosition()>=videoDurBar.getSelectedMaxValue().intValue()*1000){
-                                vidView.seekTo(videoDurBar.getSelectedMinValue().intValue());
-                            }
-                        }
-                    },1000);
+
                 }
+
             });
+
         }
 
         private String getClockValue(int sec){
@@ -175,8 +199,17 @@ public class VideoTrimmer extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         fileName = input.getText().toString();
 
+                        float Lprog = axVideoTimeline.getLeftProgress();
+                        float LseekTo = vidDuration * Lprog;
+                        int Ltime = (int) LseekTo;
+
+                        float Rprog = axVideoTimeline.getRightProgress();
+                        float RseekTo = vidDuration * Rprog;
+                        int Rtime = (int) RseekTo;
+
+
                         try {
-                            snipVideo(videoDurBar.getSelectedMinValue().intValue(), videoDurBar.getSelectedMaxValue().intValue(), fileName);
+                            snipVideo( Ltime, Rtime, fileName);
                         } catch (FFmpegCommandAlreadyRunningException e) {
                             e.printStackTrace();
                         }
@@ -202,10 +235,10 @@ public class VideoTrimmer extends AppCompatActivity {
             //get new video duration
             vidDuration = (max - min);
 
-            //FFmpegIntegration command
+            //FFmpeg command
             command = new String[]{"-ss", "" + min , "-y", "-i", inputVideoPath, "-t", "" + (max - min) , "-vcodec", "mpeg4", "-b:v", "2097152", "-b:a", "48000", "-ac", "2", "-ar", "22050", destination.toString()};
 
-            //command = new String []{"-y", "-i", inputVideoPath, "-ss", "00:00:02" , "-to", "00:00:03", "-c", "copy", destination.getAbsolutePath()};
+
             ff= FFmpeg.getInstance(com.example.capstoneapplication.VideoTrimmer.this);
             executeCommand();
         }

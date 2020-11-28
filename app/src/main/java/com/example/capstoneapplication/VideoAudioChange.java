@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 import android.widget.VideoView;
 
+import com.aghajari.axvideotimelineview.AXTimelineViewListener;
+import com.aghajari.axvideotimelineview.AXVideoTimelineView;
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
@@ -43,6 +46,7 @@ public class VideoAudioChange extends AppCompatActivity {
     String fileName, audioUriPath,audioUriPathReal;
     File destination;
     FFmpeg ff;
+    AXVideoTimelineView axVideoTimeline;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,7 @@ public class VideoAudioChange extends AppCompatActivity {
         pauseIcon = (ImageView) findViewById(R.id.pause_icon);
         addVideoButton = (Button) findViewById(R.id.addVideoButton);
         vidView = (VideoView) findViewById(R.id.videoView);
+        axVideoTimeline = findViewById(R.id.AXVideoTimelineView6);
 
 
         Intent passUri = getIntent();
@@ -60,6 +65,7 @@ public class VideoAudioChange extends AppCompatActivity {
             vidPlaying = true;
             vidView.setVideoURI(vidUri);
             vidView.start();
+            axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),vidUri));
 
         }
         clickListeners();
@@ -81,6 +87,52 @@ public class VideoAudioChange extends AppCompatActivity {
                     vidPlaying = true;
                 }
             }
+        });
+        vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(final MediaPlayer mp) {
+                vidView.start();
+                AXTimelineViewListener axTimelineViewListener = new AXTimelineViewListener() {
+                    @Override
+                    public void onLeftProgressChanged(float progress) {
+                        int dur = mp.getDuration();
+                        float prog = axVideoTimeline.getLeftProgress();
+                        float seekTo = dur * prog;
+                        int time = (int) seekTo;
+                        vidView.seekTo(time);
+                    }
+
+                    @Override
+                    public void onRightProgressChanged(float progress) {
+
+                    }
+
+                    @Override
+                    public void onDurationChanged(long Duration) {
+
+                    }
+
+                    @Override
+                    public void onPlayProgressChanged(float progress) {
+                        int dur = mp.getDuration();
+                        float prog = axVideoTimeline.getPlayProgress();
+                        float seekTo = dur * prog;
+                        int time = (int) seekTo;
+                        vidView.seekTo(time);
+                    }
+
+                    @Override
+                    public void onDraggingStateChanged(boolean isDragging) {
+
+                    }
+                };
+                axVideoTimeline.setListener(axTimelineViewListener);
+                mp.setLooping(true);
+
+
+
+            }
+
         });
     }
 

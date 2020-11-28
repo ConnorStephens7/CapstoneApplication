@@ -126,7 +126,7 @@ public class ImageCropper extends AppCompatActivity {
         String cropBounds = ("crop=" + String.valueOf(width) + ":" + String.valueOf(height)+
                 ":"+ String.valueOf(leftBound) + ":" + String.valueOf(topBound));
         ffmpegCommand = new String [] {"-i", filePath, "-vf", cropBounds, "-threads",
-                "5", "-preset", "ultrafast", "-strict", "-2", "-c:a", "copy", destination.toString()};
+                "4", "-preset", "ultrafast", "-strict", "-2", "-c:a", "copy", destination.toString()};
 
         ff= FFmpeg.getInstance(com.example.capstoneapplication.ImageCropper.this);
         executeCommand();

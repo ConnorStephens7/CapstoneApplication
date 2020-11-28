@@ -181,8 +181,9 @@ public class ImageCollage extends AppCompatActivity implements View.OnClickListe
                                 command = new String[]{"-y", "-i", imagePaths[0], "-i", imagePaths[1], "-i", imagePaths[2], "-i", imagePaths[3], "-filter_complex", "[0:v]scale=640:480[0v];[1:v]scale=640:480[1v];[2:v]scale=640:480[2v];[3:v]scale=640:480[3v];[0v][1v]vstack[u];[2v][3v]vstack[l];[u][l]vstack[v]", "-map", "[v]", "-c:a", "copy", destination.toString()};
                             }
                             if(sButton.isChecked()) {
-                                command = new String[]{"-y", "-i", imagePaths[0], "-i", imagePaths[1], "-i", imagePaths[2], "-i", imagePaths[3], "-filter_complex", "[0:v]scale=640:480[a];[1:v]scale=640:480[b];[2:v]scale=640:480[c];[3:v]scale=640:480[d];[a][b]hstack[u];[c][d]hstack[l];[u][l]vstack[v]",
-                                "-map", "[v]", "-c:a", "copy", destination.toString()};
+                                command = new String[]{"-y", "-i", imagePaths[0], "-i", imagePaths[1], "-i", imagePaths[2], "-i", imagePaths[3], "-filter_complex",
+                                        "[0:v]scale=640:480[a];[1:v]scale=640:480[b];[2:v]scale=640:480[c];[3:v]scale=640:480[d];[a][b]hstack[u];[c][d]hstack[l];[u][l]vstack[v]",
+                                        "-map", "[v]", "-c:a", "copy", destination.toString()};
                             }
                             try {
                                 executeCommand(command);

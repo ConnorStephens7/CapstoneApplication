@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.aghajari.axvideotimelineview.AXTimelineViewListener;
+import com.aghajari.axvideotimelineview.AXVideoTimelineView;
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
@@ -40,7 +43,7 @@ public class VideoFilter extends AppCompatActivity {
     VideoView vidView;
     String fileName;
     boolean vidPlaying;
-    RangeSeekBar videoDurBar;
+    AXVideoTimelineView axVideoTimeline;
     String inputVideoPath;
     String inputVideoAbsolutePath;
     String filterPreviewPath = "storage/emulated/0/EditingApeFilteredVideos/preview";
@@ -51,9 +54,9 @@ public class VideoFilter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_filter);
 
-        videoDurBar = (RangeSeekBar) findViewById(R.id.scrubBar);
         imgView = (ImageView) findViewById(R.id.pause_icon);
         vidView = (VideoView) findViewById(R.id.videoView);
+        axVideoTimeline = findViewById(R.id.AXVideoTimelineView);
 
         File destFolder = new File("storage/emulated/0" + "/EditingApeFilteredVideos");
         if(!destFolder.exists()) {
@@ -72,6 +75,7 @@ public class VideoFilter extends AppCompatActivity {
             vidPlaying = true;
             vidView.setVideoURI(uri);
             vidView.start();
+            axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),uri));
 
         }
         clickListeners();
@@ -93,6 +97,54 @@ public class VideoFilter extends AppCompatActivity {
                 }
             }
         });
+        vidView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(final MediaPlayer mp) {
+                vidView.start();
+                AXTimelineViewListener axTimelineViewListener = new AXTimelineViewListener() {
+                    @Override
+                    public void onLeftProgressChanged(float progress) {
+                        int dur = mp.getDuration();
+                        float prog = axVideoTimeline.getLeftProgress();
+                        float seekTo = dur * prog;
+                        int time = (int) seekTo;
+                        vidView.seekTo(time);
+                    }
+
+                    @Override
+                    public void onRightProgressChanged(float progress) {
+
+                    }
+
+                    @Override
+                    public void onDurationChanged(long Duration) {
+
+                    }
+
+                    @Override
+                    public void onPlayProgressChanged(float progress) {
+                        int dur = mp.getDuration();
+                        float prog = axVideoTimeline.getPlayProgress();
+                        float seekTo = dur * prog;
+                        int time = (int) seekTo;
+                        vidView.seekTo(time);
+                    }
+
+                    @Override
+                    public void onDraggingStateChanged(boolean isDragging) {
+
+                    }
+                };
+                axVideoTimeline.setListener(axTimelineViewListener);
+                mp.setLooping(true);
+
+
+
+            }
+
+        });
+
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
@@ -154,7 +206,8 @@ public class VideoFilter extends AppCompatActivity {
                 ff= FFmpeg.getInstance(com.example.capstoneapplication.VideoFilter.this);
                 filterSelection = 1;
                 String[] ffmpegCommand;
-                ffmpegCommand = new String [] {"-y","-i", inputVideoAbsolutePath, "-filter_complex", "colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131",
+                ffmpegCommand = new String [] {"-y","-i", inputVideoAbsolutePath, "-filter_complex",
+                        "colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131",
                         "-threads", "4","-vcodec", "mpeg4","-r", "18", filterPreviewPath + "1.mp4"};
                 try {
                     executeCommand(ffmpegCommand);
@@ -187,7 +240,7 @@ public class VideoFilter extends AppCompatActivity {
     }
 
     public void configureInvertColorButton(){
-        ImageButton IEButton =  findViewById(R.id.invert_button);
+        ImageButton IEButton =  findViewById(R.id.negate_button);
         IEButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

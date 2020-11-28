@@ -29,7 +29,8 @@ import java.util.ArrayList;
  * @version 1.00
  *
  */
-public class AXVideoTimelineView extends View{
+public class
+AXVideoTimelineView extends View{
 
     long videoLength;
 

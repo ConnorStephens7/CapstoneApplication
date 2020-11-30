@@ -66,7 +66,7 @@ public class ImageFilter extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
-        if(menuItem.getItemId()==R.id.filter){
+        if(menuItem.getItemId()==R.id.save){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(com.example.capstoneapplication.ImageFilter.this);
 
             LinearLayout linLay = new LinearLayout(com.example.capstoneapplication.ImageFilter.this);
@@ -232,7 +232,7 @@ public class ImageFilter extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.filter_menu,menu);
+        menuInflater.inflate(R.menu.save_menu,menu);
         return true;
     }
 

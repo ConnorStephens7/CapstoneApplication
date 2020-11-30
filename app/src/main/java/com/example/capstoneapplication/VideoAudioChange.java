@@ -39,11 +39,9 @@ public class VideoAudioChange extends AppCompatActivity {
     ImageView pauseIcon;
     Button addVideoButton;
     VideoView vidView;
-    ToggleButton mergeToggle;
     String [] command;
     boolean vidPlaying = false;
-    int vidDuration;
-    String fileName, audioUriPath,audioUriPathReal;
+    String fileName, audioUriPath;
     File destination;
     FFmpeg ff;
     AXVideoTimelineView axVideoTimeline;

@@ -31,8 +31,6 @@ import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 
-import org.florescu.android.rangeseekbar.RangeSeekBar;
-
 import java.io.File;
 
 public class VideoFilter extends AppCompatActivity {
@@ -148,7 +146,7 @@ public class VideoFilter extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
-        if(menuItem.getItemId()==R.id.filter){
+        if(menuItem.getItemId()==R.id.save){
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(com.example.capstoneapplication.VideoFilter.this);
 
             LinearLayout linLay = new LinearLayout(com.example.capstoneapplication.VideoFilter.this);
@@ -318,7 +316,7 @@ public class VideoFilter extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.filter_menu,menu);
+        menuInflater.inflate(R.menu.save_menu,menu);
         return true;
     }
 

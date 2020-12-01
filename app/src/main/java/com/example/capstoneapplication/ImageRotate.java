@@ -52,6 +52,7 @@ public class ImageRotate extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_rotate);
         imgView =  findViewById(R.id.imageView);
+        getSupportActionBar().setTitle("Image Rotation");
         Intent passUri = getIntent();
         clockWButton = findViewById(R.id.clockwise_button);
         counterCWButton = findViewById(R.id.counterclockwise_button);
@@ -147,7 +148,7 @@ public class ImageRotate extends AppCompatActivity implements View.OnClickListen
 
                     try
                     {
-                        File destFolder = new File("storage/emulated/0" + "/EditingApeRotatedImages");
+                        File destFolder = new File("storage/emulated/0/EditingApeOutput/RotatedImages");
                         if (!destFolder.exists()) {
                             destFolder.mkdir();
                         }

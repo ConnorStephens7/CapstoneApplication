@@ -32,7 +32,6 @@ import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 
-import org.florescu.android.rangeseekbar.RangeSeekBar;
 
 import java.io.File;
 
@@ -43,7 +42,6 @@ public class VideoTrimmer extends AppCompatActivity {
         Uri uri;
         ImageView imgView;
         VideoView vidView;
-        RangeSeekBar videoDurBar;
         TextView clockLeft, clockRight;
         AXVideoTimelineView axVideoTimeline;
         boolean vidPlaying = false;
@@ -62,7 +60,7 @@ public class VideoTrimmer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_video_trimmer);
-
+            getSupportActionBar().setTitle("Video Trimmer");
             clockLeft = (TextView) findViewById(R.id.leftClock);
             clockRight = (TextView) findViewById(R.id.rightClock);
 
@@ -224,7 +222,7 @@ public class VideoTrimmer extends AppCompatActivity {
 
         private void snipVideo( int min, int max, String fileName) throws FFmpegCommandAlreadyRunningException {
 
-            File destFolder = new File("storage/emulated/0" + "/EditingApeSnippedVideos");
+            File destFolder = new File("storage/emulated/0/EditingApeOutput/TrimmedVideos/");
             if (!destFolder.exists()) {
                 destFolder.mkdir();
             }

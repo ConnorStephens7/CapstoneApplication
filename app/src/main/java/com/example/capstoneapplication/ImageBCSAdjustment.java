@@ -47,6 +47,7 @@ public class ImageBCSAdjustment extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_bcs_adjustment);
+        getSupportActionBar().setTitle("Image BCS Adjustment");
         Intent passUri = getIntent();
         if (passUri != null) {
             String imagePath = passUri.getStringExtra("uri");
@@ -98,7 +99,7 @@ public class ImageBCSAdjustment extends AppCompatActivity{
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         fileName = input.getText().toString();
-                        File destFolder = new File("storage/emulated/0" + "/EditingApeImageBCSAdjusted");
+                        File destFolder = new File("storage/emulated/0/EditingApeOutput/ImageBCSAdjusted/");
                         if (!destFolder.exists()) {
                             destFolder.mkdir();
                         }

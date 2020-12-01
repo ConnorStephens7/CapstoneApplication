@@ -44,6 +44,7 @@ public class ImageCropper extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_cropper);
+        getSupportActionBar().setTitle("Image Cropper");
         Intent passUri = getIntent();
 
         if (passUri != null) {
@@ -117,7 +118,7 @@ public class ImageCropper extends AppCompatActivity {
         int leftBound = cropShape.left;
         int topBound = cropShape.top;
         String filePath = getPathFromUri(getApplicationContext(),uri);
-        File destFolder = new File("storage/emulated/0" + "/EditingApeCroppedImages");
+        File destFolder = new File("storage/emulated/0/EditingApeOutput/CroppedImages");
         if (!destFolder.exists()) {
             destFolder.mkdir();
         }

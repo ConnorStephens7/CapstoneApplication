@@ -18,7 +18,7 @@ public class ImageEditor extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_editor);
-
+        getSupportActionBar().setTitle("Image Editor");
         imgView = (ImageView) findViewById(R.id.imageView);
 
         Intent passUri = getIntent();

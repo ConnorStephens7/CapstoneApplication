@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:gravity="top|center_vertical"
     android:orientation="vertical"
-    tools:context=".VideoCollage">
+    tools:context=".VideoCollage"
+    android:background="@drawable/background_color">
 
 
     <ScrollView

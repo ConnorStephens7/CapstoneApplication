@@ -41,12 +41,13 @@ public class FileConverter extends AppCompatActivity {
     FFmpeg ff;
     TextView txtView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_converter);
-
-        File destFolder = new File("storage/emulated/0" + "/EditingApeFileConverter/");
+        getSupportActionBar().setTitle("");
+        File destFolder = new File("storage/emulated/0/EditingApeOutput/FileConverter");
         if (!destFolder.exists()) {
             destFolder.mkdir();
         }
@@ -168,7 +169,7 @@ public class FileConverter extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     String fileName = input.getText().toString();
-                    File destFolder = new File("storage/emulated/0" + "/EditingApeFileConverter");
+                    File destFolder = new File("storage/emulated/0/EditingApeOutput/EditingApeFileConverter");
                     if (!destFolder.exists()) {
                         destFolder.mkdir();
                     }
@@ -178,7 +179,7 @@ public class FileConverter extends AppCompatActivity {
                         ffmpegCommand = new String[]{"-y", "-i", inputPath, "-b:v", "10M", destination.toString()};
                     }
                     if(fileExtension.equals(".flac")) {
-                        ffmpegCommand = new String[]{"-y", "-i", inputPath, "-compression_level", "12", destination.toString()};
+                        ffmpegCommand = new String[]{"-y", "-i", inputPath, "-compression_level", "12 ", destination.toString()};
                     }
                     if(fileExtension.equals(".wav")){
                         ffmpegCommand = new String[]{"-y", "-i", inputPath, "-compression_level", "12", destination.toString()};

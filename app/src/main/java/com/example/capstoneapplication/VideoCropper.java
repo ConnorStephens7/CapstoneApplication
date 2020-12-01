@@ -57,6 +57,7 @@ public class VideoCropper extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_cropper);
+        getSupportActionBar().setTitle("Video Cropper");
         axVideoTimeline = findViewById(R.id.AXVideoTimelineView4);
         Intent passUri = getIntent();
 
@@ -175,7 +176,7 @@ public class VideoCropper extends AppCompatActivity {
         int leftBound = cropShape.left;
         int topBound = cropShape.top;
         String filePath = getPathFromUri(getApplicationContext(),uri);
-        File destFolder = new File("storage/emulated/0" + "/EditingApeCroppedVideos");
+        File destFolder = new File("storage/emulated/0/EditingApeOutput/CroppedVideos");
         if (!destFolder.exists()) {
             destFolder.mkdir();
         }

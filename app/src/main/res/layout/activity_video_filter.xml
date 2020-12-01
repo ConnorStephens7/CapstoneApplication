@@ -5,19 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/background_color">
 
 
     <VideoView
         android:id="@+id/videoView"
-        android:layout_width="379dp"
-        android:layout_height="539dp"
+        android:layout_width="370dp"
+        android:layout_height="492dp"
         android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.15" />
 
     <ImageView
         android:id="@+id/pause_icon"
@@ -40,7 +42,7 @@
         android:id="@+id/horizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:background="@android:color/darker_gray"
+        android:background="@drawable/background_color"
         android:fillViewport="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +60,7 @@
             <ImageButton
                 android:id="@+id/sepia_button"
                 style="@android:style/Widget.ImageButton"
-                android:layout_width="80dp"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
 
                 android:minWidth="75dp"
@@ -70,7 +72,7 @@
             <ImageButton
                 android:id="@+id/grayscale_button"
                 style="@android:style/Widget.ImageButton"
-                android:layout_width="80dp"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
 
                 android:minWidth="75dp"
@@ -91,22 +93,12 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_negate" />
 
+
+
             <ImageButton
                 android:id="@+id/vignette_button"
                 style="@android:style/Widget.ImageButton"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:minWidth="75dp"
-                android:minHeight="75dp"
-                android:padding="20dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_vignette" />
-
-            <ImageButton
-                android:id="@+id/sobel_button"
-                style="@android:style/Widget.ImageButton"
-                android:layout_width="76dp"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:minWidth="75dp"
@@ -116,9 +108,95 @@
                 android:src="@drawable/icon_sobel" />
 
             <ImageButton
+                android:id="@+id/erosion_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_vignette" />
+
+
+
+            <ImageButton
+                android:id="@+id/red_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_red" />
+
+            <ImageButton
+                android:id="@+id/green_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_green" />
+
+            <ImageButton
+                android:id="@+id/blue_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_blue" />
+
+            <ImageButton
+                android:id="@+id/bluegreen_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_bluegreen" />
+
+            <ImageButton
+                android:id="@+id/redgreen_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_redgreen" />
+
+            <ImageButton
+                android:id="@+id/redblue_button"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:minWidth="75dp"
+                android:minHeight="75dp"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_redblue" />
+
+            <ImageButton
                 android:id="@+id/fastmo_button"
                 style="@android:style/Widget.ImageButton"
-                android:layout_width="76dp"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:minWidth="75dp"
@@ -130,7 +208,7 @@
             <ImageButton
                 android:id="@+id/slowmo_button"
                 style="@android:style/Widget.ImageButton"
-                android:layout_width="76dp"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:minWidth="75dp"
@@ -138,6 +216,8 @@
                 android:padding="20dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_slow" />
+
+
 
 
         </LinearLayout>

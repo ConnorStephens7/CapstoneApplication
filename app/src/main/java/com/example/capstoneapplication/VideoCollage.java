@@ -46,6 +46,7 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_collage);
+        getSupportActionBar().setTitle("Video Collage");
         Intent passUri = getIntent();
         if (passUri != null) {
             String videoPath = passUri.getStringExtra("uri");
@@ -148,7 +149,7 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         fileName = input.getText().toString();
-                        File destFolder = new File("storage/emulated/0" + "/EditingApeVideoCollages");
+                        File destFolder = new File("storage/emulated/0/EditingApeOutput/VideoCollages");
                         if (!destFolder.exists()) {
                             destFolder.mkdir();
                         }

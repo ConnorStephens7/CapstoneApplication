@@ -51,6 +51,7 @@ public class VideoResolution extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_resolution);
+        getSupportActionBar().setTitle("Video Resolution Adjustment");
         vidView = (VideoView) findViewById(R.id.videoView);
         pauseIcon = findViewById(R.id.pause_icon);
         axVideoTimeline = findViewById(R.id.AXVideoTimelineView3);
@@ -184,7 +185,7 @@ public class VideoResolution extends AppCompatActivity {
 
     private void changeVideoResolution() throws FFmpegCommandAlreadyRunningException{
         String filePath = getPathFromUri(getApplicationContext(),uri);
-        File destFolder = new File("storage/emulated/0" + "/EditingApeResChangedVideos");
+        File destFolder = new File("storage/emulated/0/EditingApeOutput/ResChangedVideos/");
         if (!destFolder.exists()) {
             destFolder.mkdir();
         }

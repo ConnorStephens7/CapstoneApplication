@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_color">
 
     <ImageView
         android:id="@+id/pause_icon"
@@ -25,8 +26,8 @@
 
     <VideoView
         android:id="@+id/videoView"
-        android:layout_width="412dp"
-        android:layout_height="522dp"
+        android:layout_width="385dp"
+        android:layout_height="485dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -34,10 +35,9 @@
         android:layout_alignParentRight="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.065" />
 
     <Button
         android:id="@+id/addVideoButton"

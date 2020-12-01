@@ -43,7 +43,7 @@ public class VideoFromImages extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_from_images);
-
+        getSupportActionBar().setTitle("Video From Images");
 
         Intent passUri = getIntent();
         if (passUri != null) {
@@ -151,7 +151,7 @@ public class VideoFromImages extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     fileName = input.getText().toString();
-                    File destFolder = new File("storage/emulated/0" + "/EditingApeVideoFromImages");
+                    File destFolder = new File("storage/emulated/0/EditingApeOutput/VideoFromImages");
                     if (!destFolder.exists()) {
                         destFolder.mkdir();
                     }
@@ -221,7 +221,7 @@ public class VideoFromImages extends AppCompatActivity implements View.OnClickLi
     }
 
     public void createInputTxtFile() throws IOException {
-        imagesInput = new File("storage/emulated/0/EditingApeVideoFromImages/ImagesInput.txt");
+        imagesInput = new File("storage/emulated/0/EditingApeOutput/VideoFromImages/ImagesInput.txt");
         FileWriter writer = new FileWriter(imagesInput);
         BufferedWriter bufferedWriter = new BufferedWriter(writer);
         for(int i = 0; i< imagePaths.length; i++) {

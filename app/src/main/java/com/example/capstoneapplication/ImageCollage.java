@@ -46,6 +46,7 @@ public class ImageCollage extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_collage);
+        getSupportActionBar().setTitle("Image Collage");
         Intent passUri = getIntent();
         if (passUri != null) {
             String imagePath = passUri.getStringExtra("uri");
@@ -138,7 +139,7 @@ public class ImageCollage extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         fileName = input.getText().toString();
-                        File destFolder = new File("storage/emulated/0" + "/EditingApeImageCollages");
+                        File destFolder = new File("storage/emulated/0/EditingApeOutput/ImageCollages");
                         if (!destFolder.exists()) {
                             destFolder.mkdir();
                         }

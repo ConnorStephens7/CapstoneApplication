@@ -50,6 +50,7 @@ public class VideoAudioChange extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_audio_change);
+        getSupportActionBar().setTitle("Audio Change");
         pauseIcon = (ImageView) findViewById(R.id.pause_icon);
         addVideoButton = (Button) findViewById(R.id.addVideoButton);
         vidView = (VideoView) findViewById(R.id.videoView);
@@ -162,7 +163,7 @@ public class VideoAudioChange extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             fileName = input.getText().toString();
-                            File destFolder = new File("storage/emulated/0" + "/EditingApeAudioChangedVideos");
+                            File destFolder = new File("storage/emulated/0/EditingApeOutput/AudioChangedVideos");
                             if (!destFolder.exists()) {
                                 destFolder.mkdir();
                             }

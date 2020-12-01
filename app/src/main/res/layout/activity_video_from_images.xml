@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="top|center_vertical"
-    tools:context=".VideoFromImages">
+    tools:context=".VideoFromImages"
+    android:background="@drawable/background_color">
 
 
     <LinearLayout

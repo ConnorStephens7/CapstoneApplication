@@ -55,6 +55,7 @@ public class VideoMerge extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_merge);
+        getSupportActionBar().setTitle("Merge Videos");
         pauseIcon = (ImageView) findViewById(R.id.pause_icon);
         addVideoButton = (Button) findViewById(R.id.addVideoButton);
         vidView = (VideoView) findViewById(R.id.videoView);
@@ -183,7 +184,7 @@ public class VideoMerge extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     fileName = input.getText().toString();
-                    File destFolder = new File("storage/emulated/0" + "/EditingApeMergedVideos");
+                    File destFolder = new File("storage/emulated/0/EditingApeOutput/MergedVideos");
                     if (!destFolder.exists()) {
                         destFolder.mkdir();
                     }
@@ -213,7 +214,7 @@ public class VideoMerge extends AppCompatActivity {
     }
 
     public void createInputTxtFile(String startUriPath, String endUriPath) throws IOException {
-        File mergeInput = new File("storage/emulated/0/EditingApeMergedVideos/mergeInput.txt");
+        File mergeInput = new File("storage/emulated/0/EditingApeOutput/MergedVideos/mergeInput.txt");
         FileWriter writer = new FileWriter(mergeInput);
         BufferedWriter bufferedWriter = new BufferedWriter(writer);
         bufferedWriter.write("file " + startUriPath);
@@ -221,7 +222,7 @@ public class VideoMerge extends AppCompatActivity {
         bufferedWriter.write("file " + endUriPath);
         bufferedWriter.close();
         writer.close();
-        command = new String []{"-y", "-f", "concat", "-safe", "0", "-i", "storage/emulated/0/EditingApeMergedVideos/mergeInput.txt", "-c", "copy", destination.toString()};
+        command = new String []{"-y", "-f", "concat", "-safe", "0", "-i", "storage/emulated/0/EditingApeOutput/MergedVideos/mergeInput.txt", "-c", "copy", destination.toString()};
 
     }
 

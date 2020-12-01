@@ -44,7 +44,7 @@ public class VideoEditor extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_editor);
-
+        getSupportActionBar().setTitle("Video Editor");
 
         imgView = (ImageView) findViewById(R.id.pause_icon);
         vidView = (VideoView) findViewById(R.id.videoView);

@@ -11,6 +11,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -19,6 +22,8 @@ import android.widget.Toast;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.FFmpegLoadBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -30,14 +35,24 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         setContentView(R.layout.activity_home_screen);
         requestPermission();
 
+        File destFolder = new File("storage/emulated/0/EditingApeOutput");
+        if(!destFolder.exists()) {
+            destFolder.mkdir();
+        }
+
         try{
         loadFFmpegLib();
         }
         catch (FFmpegNotSupportedException e){
             e.printStackTrace();
         }
+        getSupportActionBar().setTitle("");
 
     }
+
+
+
+
     public void configureFileConverterButton(View v){
         Intent toFC = new Intent(MainActivity.this, FileConverter.class);
 

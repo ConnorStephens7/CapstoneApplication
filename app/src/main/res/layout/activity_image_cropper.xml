@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/background_color">
 
 
     <com.theartofdev.edmodo.cropper.CropImageView
         android:id="@+id/cropImageView"
-        android:layout_width="395dp"
-        android:layout_height="421dp"
+        android:layout_width="410dp"
+        android:layout_height="501dp"
         android:layout_weight="1"
         custom:layout_constraintBottom_toBottomOf="parent"
         custom:layout_constraintEnd_toEndOf="parent"

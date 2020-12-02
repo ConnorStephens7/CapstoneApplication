@@ -8,7 +8,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +31,6 @@ import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 
-
 import java.io.File;
 
 
@@ -46,8 +44,7 @@ public class VideoTrimmer extends AppCompatActivity {
         AXVideoTimelineView axVideoTimeline;
         boolean vidPlaying = false;
         int vidDuration;
-
-
+        Utility util;
 
 
     String fileName, inputVideoPath;
@@ -61,6 +58,7 @@ public class VideoTrimmer extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_video_trimmer);
             getSupportActionBar().setTitle("Video Trimmer");
+            util = new Utility();
             clockLeft = (TextView) findViewById(R.id.leftClock);
             clockRight = (TextView) findViewById(R.id.rightClock);
 
@@ -75,7 +73,7 @@ public class VideoTrimmer extends AppCompatActivity {
                 vidPlaying= true;
                 vidView.setVideoURI(uri);
                 vidView.start();
-                axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),uri));
+                axVideoTimeline.setVideoPath(util.getPathFromUri(getApplicationContext(),uri));
 
 
             }
@@ -228,7 +226,7 @@ public class VideoTrimmer extends AppCompatActivity {
             }
             String fileExtension = ".mp4";
             destination = new File(destFolder, fileName + fileExtension);
-            inputVideoPath = getPathFromUri(getApplicationContext(), uri);
+            inputVideoPath = util.getPathFromUri(getApplicationContext(), uri);
 
             //get new video duration
             vidDuration = (max - min);
@@ -270,25 +268,6 @@ public class VideoTrimmer extends AppCompatActivity {
 
             }
 
-        private String getPathFromUri(Context ctxt, Uri uriContent) {
-            Cursor cursor = null;
-            try {
-                String[] project = {MediaStore.Images.Media.DATA};
-                cursor = ctxt.getContentResolver().query(uriContent, project, null, null, null);
-                int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-                cursor.moveToFirst();
-                return cursor.getString(col_index);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                return "";
-            }
-            finally{
-                if (cursor!=null){
-                    cursor.close();
-                }
-            }
-        }
 
         @Override
         public boolean onCreateOptionsMenu(Menu menu){

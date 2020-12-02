@@ -38,14 +38,17 @@ public class ImageCropper extends AppCompatActivity {
     File destination;
     String [] ffmpegCommand;
     FFmpeg ff;
+    Utility util;
 
 
 
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_cropper);
         getSupportActionBar().setTitle("Image Cropper");
         Intent passUri = getIntent();
+        util = new Utility();
 
         if (passUri != null) {
             String imagePath = passUri.getStringExtra("uri");
@@ -117,7 +120,7 @@ public class ImageCropper extends AppCompatActivity {
         int height = Math.abs(cropShape.top - cropShape.bottom);
         int leftBound = cropShape.left;
         int topBound = cropShape.top;
-        String filePath = getPathFromUri(getApplicationContext(),uri);
+        String filePath = util.getPathFromUri(getApplicationContext(),uri);
         File destFolder = new File("storage/emulated/0/EditingApeOutput/CroppedImages");
         if (!destFolder.exists()) {
             destFolder.mkdir();
@@ -160,24 +163,6 @@ public class ImageCropper extends AppCompatActivity {
 
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriData) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriData, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
 
 }

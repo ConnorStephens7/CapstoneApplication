@@ -41,6 +41,7 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
     RadioGroup collageOptions;
     int videoCount, vidViewID;
     int [] frameHistory;
+    Utility util;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_video_collage);
         getSupportActionBar().setTitle("Video Collage");
         Intent passUri = getIntent();
+        util = new Utility();
         if (passUri != null) {
             String videoPath = passUri.getStringExtra("uri");
             uri = Uri.parse(videoPath);
@@ -243,11 +245,11 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
             videoUri = data.getData();
             if (!contains(frameHistory, vidViewID)) {
                 frameHistory[videoCount] = vidViewID;
-                videoPaths[videoCount] = getPathFromUri(getApplicationContext(),videoUri);
+                videoPaths[videoCount] = util.getPathFromUri(getApplicationContext(),videoUri);
                 videoCount++;//add to videoCount if an unused videoView is being set by user
                 }
             else if(contains(frameHistory, vidViewID)){
-                videoPaths[vidViewID-1] = getPathFromUri(getApplicationContext(),videoUri);
+                videoPaths[vidViewID-1] = util.getPathFromUri(getApplicationContext(),videoUri);
             }
         }
         switch (vidViewID){
@@ -305,25 +307,7 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriContent) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriContent, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

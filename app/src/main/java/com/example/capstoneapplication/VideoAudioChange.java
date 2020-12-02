@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.VideoView;
 
@@ -45,6 +46,7 @@ public class VideoAudioChange extends AppCompatActivity {
     File destination;
     FFmpeg ff;
     AXVideoTimelineView axVideoTimeline;
+    Utility util;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,9 @@ public class VideoAudioChange extends AppCompatActivity {
         addVideoButton = (Button) findViewById(R.id.addVideoButton);
         vidView = (VideoView) findViewById(R.id.videoView);
         axVideoTimeline = findViewById(R.id.AXVideoTimelineView6);
+        util = new Utility();
+        Toast audioToast = Toast.makeText(getApplicationContext(),"Please choose files from your internal library", Toast. LENGTH_SHORT);
+        audioToast.show();
 
 
         Intent passUri = getIntent();
@@ -64,7 +69,7 @@ public class VideoAudioChange extends AppCompatActivity {
             vidPlaying = true;
             vidView.setVideoURI(vidUri);
             vidView.start();
-            axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),vidUri));
+            axVideoTimeline.setVideoPath(util.getPathFromUri(getApplicationContext(),vidUri));
 
         }
         clickListeners();
@@ -172,7 +177,7 @@ public class VideoAudioChange extends AppCompatActivity {
                             try {
                                 audioUriPath = getAudioPathFromURI(audioUri);
 
-                                createFfmpegCommand(getPathFromUri(getApplicationContext(), vidUri), audioUriPath);
+                                createFfmpegCommand(util.getPathFromUri(getApplicationContext(), vidUri), audioUriPath);
                                 executeCommand(command);
                             } catch (FFmpegCommandAlreadyRunningException e) {
                                 e.printStackTrace();
@@ -246,25 +251,6 @@ public class VideoAudioChange extends AppCompatActivity {
         vidView.setVideoURI(preview);
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriContent) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriContent, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
     private String getAudioPathFromURI(Uri contentUri) {
         String[] media = { MediaStore.Audio.Media.DATA };
         CursorLoader loader = new CursorLoader(getApplicationContext(), contentUri, media, null, null, null);
@@ -273,9 +259,6 @@ public class VideoAudioChange extends AppCompatActivity {
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

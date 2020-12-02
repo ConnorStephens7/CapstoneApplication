@@ -23,11 +23,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
-
+import com.example.capstoneapplication.Utility;
 
 import java.io.File;
 
@@ -40,6 +41,7 @@ public class FileConverter extends AppCompatActivity {
     String[] ffmpegCommand;
     FFmpeg ff;
     TextView txtView;
+    Utility util;
 
 
     @Override
@@ -47,6 +49,7 @@ public class FileConverter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_converter);
         getSupportActionBar().setTitle("");
+        util = new Utility();
         File destFolder = new File("storage/emulated/0/EditingApeOutput/FileConverter");
         if (!destFolder.exists()) {
             destFolder.mkdir();
@@ -89,6 +92,8 @@ public class FileConverter extends AppCompatActivity {
     }
 
     public void selectAudioFile(View v){
+        Toast audioToast = Toast.makeText(getApplicationContext(),"Please choose files from your internal library", Toast. LENGTH_SHORT);
+        audioToast.show();
         Intent intent;
         intent = new Intent();
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -119,7 +124,7 @@ public class FileConverter extends AppCompatActivity {
             switch (reqCode){
                 case 100:
                     uri = data.getData();
-                    inputPath = getPathFromUri(getApplicationContext(), uri);
+                    inputPath = util.getPathFromUri(getApplicationContext(), uri);
                     configureVideoFileSpinner();
                     break;
                 case 101:
@@ -129,7 +134,7 @@ public class FileConverter extends AppCompatActivity {
                     break;
                 case 102:
                     uri = data.getData();
-                    inputPath = getPathFromUri(getApplicationContext(), uri);
+                    inputPath = util.getPathFromUri(getApplicationContext(), uri);
                     configureImageFileSpinner();
             }
             txtView = findViewById(R.id.filepath);
@@ -169,7 +174,7 @@ public class FileConverter extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     String fileName = input.getText().toString();
-                    File destFolder = new File("storage/emulated/0/EditingApeOutput/EditingApeFileConverter");
+                    File destFolder = new File("storage/emulated/0/EditingApeOutput/FileConverter");
                     if (!destFolder.exists()) {
                         destFolder.mkdir();
                     }
@@ -228,25 +233,7 @@ public class FileConverter extends AppCompatActivity {
 
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriContent) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriContent, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
 
     private String getAudioPathFromURI(Uri contentUri) {
         String[] media = { MediaStore.Audio.Media.DATA };

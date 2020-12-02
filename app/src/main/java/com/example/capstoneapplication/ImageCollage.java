@@ -41,6 +41,7 @@ public class ImageCollage extends AppCompatActivity implements View.OnClickListe
     RadioGroup collageOptions;
     int imgCount, imgViewID;
     int [] frameHistory;
+    Utility util;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class ImageCollage extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_image_collage);
         getSupportActionBar().setTitle("Image Collage");
         Intent passUri = getIntent();
+        util = new Utility();
         if (passUri != null) {
             String imagePath = passUri.getStringExtra("uri");
             uri = Uri.parse(imagePath);
@@ -231,11 +233,11 @@ public class ImageCollage extends AppCompatActivity implements View.OnClickListe
             imageUri = data.getData();
             if (!contains(frameHistory, imgViewID)) {
                 frameHistory[imgCount] = imgViewID;
-                imagePaths[imgCount] = getPathFromUri(getApplicationContext(), imageUri);
+                imagePaths[imgCount] = util.getPathFromUri(getApplicationContext(), imageUri);
                 imgCount++;//add to imgCount if an unused imageView is being set by user
             }
             else if(contains(frameHistory, imgViewID)){
-                imagePaths[imgViewID -1] = getPathFromUri(getApplicationContext(), imageUri);
+                imagePaths[imgViewID -1] = util.getPathFromUri(getApplicationContext(), imageUri);
             }
         }
         switch (imgViewID){
@@ -284,25 +286,7 @@ public class ImageCollage extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriContent) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriContent, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

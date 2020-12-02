@@ -50,6 +50,7 @@ public class VideoMerge extends AppCompatActivity {
     AXVideoTimelineView axVideoTimeline;
     File destination;
     FFmpeg ff;
+    Utility util;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class VideoMerge extends AppCompatActivity {
         vidView = (VideoView) findViewById(R.id.videoView);
         mergeToggle = (ToggleButton) findViewById(R.id.mergeToggle);
         axVideoTimeline = findViewById(R.id.AXVideoTimelineView2);
+        util = new Utility();
 
         Intent passUri = getIntent();
         if (passUri != null) {
@@ -69,7 +71,7 @@ public class VideoMerge extends AppCompatActivity {
             vidPlaying = true;
             vidView.setVideoURI(uri);
             vidView.start();
-            axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),uri));
+            axVideoTimeline.setVideoPath(util.getPathFromUri(getApplicationContext(),uri));
 
         }
         clickListeners();
@@ -118,18 +120,10 @@ public class VideoMerge extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRightProgressChanged(float progress) {
-                        int dur = mp.getDuration();
-                        float prog = axVideoTimeline.getRightProgress();
-                        float seekTo = dur * prog;
-                        int time = (int) seekTo;
-
-                    }
+                    public void onRightProgressChanged(float progress) { }
 
                     @Override
-                    public void onDurationChanged(long Duration) {
-
-                    }
+                    public void onDurationChanged(long Duration) { }
 
                     @Override
                     public void onPlayProgressChanged(float progress) {
@@ -141,9 +135,7 @@ public class VideoMerge extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onDraggingStateChanged(boolean isDragging) {
-
-                    }
+                    public void onDraggingStateChanged(boolean isDragging) { }
                 };
                 axVideoTimeline.setListener(axTimelineViewListener);
                 vidDuration =mp.getDuration()/1000; //get vid time in seconds since getDuration returns ms
@@ -196,11 +188,11 @@ public class VideoMerge extends AppCompatActivity {
                         boolean ToggleButtonState = mergeToggle.isChecked();
 
                         if(!ToggleButtonState){
-                            createInputTxtFile(getPathFromUri(getApplicationContext(), uri),getPathFromUri(getApplicationContext(),uri2));
+                            createInputTxtFile(util.getPathFromUri(getApplicationContext(), uri),util.getPathFromUri(getApplicationContext(),uri2));
                             executeCommand(command);
                         }
                         else if(ToggleButtonState){
-                            createInputTxtFile(getPathFromUri(getApplicationContext(), uri2),getPathFromUri(getApplicationContext(),uri));
+                            createInputTxtFile(util.getPathFromUri(getApplicationContext(), uri2),util.getPathFromUri(getApplicationContext(),uri));
                             executeCommand(command);
                         }
                     } catch (FFmpegCommandAlreadyRunningException | IOException e) {
@@ -281,25 +273,7 @@ public class VideoMerge extends AppCompatActivity {
         vidView.start();
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriContent) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriContent, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

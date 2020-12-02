@@ -41,12 +41,14 @@ public class ImageFilter extends AppCompatActivity {
     String savePathPrefix = "storage/emulated/0/EditingApeOutput/FilteredImages";
     FFmpeg ff;
     int filterSelection;
+    Utility util;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_filter);
         getSupportActionBar().setTitle("Image Filter");
         File destFolder = new File("storage/emulated/0/EditingApeOutput/FilteredImages");
+        util = new Utility();
         if(!destFolder.exists()) {
             destFolder.mkdir();
         }
@@ -71,7 +73,7 @@ public class ImageFilter extends AppCompatActivity {
         if (passUri != null) {
             inputImagePath = passUri.getStringExtra("uri");
             uri = Uri.parse(inputImagePath);
-            inputImageAbsolutePath = getPathFromUri(getApplicationContext(),uri);
+            inputImageAbsolutePath = util.getPathFromUri(getApplicationContext(),uri);
             imgView.setImageURI(uri);
         }
 
@@ -530,25 +532,7 @@ public class ImageFilter extends AppCompatActivity {
         imgView.setImageURI(previewUri);
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriContent) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriContent, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();

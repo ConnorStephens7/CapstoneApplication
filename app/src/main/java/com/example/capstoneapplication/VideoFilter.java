@@ -1,14 +1,11 @@
 package com.example.capstoneapplication;
 
-import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-
-import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -48,6 +45,7 @@ public class VideoFilter extends AppCompatActivity {
     String savePathPrefix = "storage/emulated/0/EditingApeOutput/FilteredVideos";
     FFmpeg ff;
     int filterSelection;
+    Utility util;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +54,7 @@ public class VideoFilter extends AppCompatActivity {
         imgView = (ImageView) findViewById(R.id.pause_icon);
         vidView = (VideoView) findViewById(R.id.videoView);
         axVideoTimeline = findViewById(R.id.AXVideoTimelineView);
+        util = new Utility();
 
         File destFolder = new File("storage/emulated/0/EditingApeOutput/FilteredVideos");
         if(!destFolder.exists()) {
@@ -81,11 +80,11 @@ public class VideoFilter extends AppCompatActivity {
 
             inputVideoPath = passUri.getStringExtra("uri");
             uri = Uri.parse(inputVideoPath);
-            inputVideoAbsolutePath = getPathFromUri(getApplicationContext(),uri);
+            inputVideoAbsolutePath = util.getPathFromUri(getApplicationContext(),uri);
             vidPlaying = true;
             vidView.setVideoURI(uri);
             vidView.start();
-            axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),uri));
+            axVideoTimeline.setVideoPath(util.getPathFromUri(getApplicationContext(),uri));
 
         }
         clickListeners();
@@ -569,25 +568,7 @@ public class VideoFilter extends AppCompatActivity {
         vidView.start();
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriContent) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriContent, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();

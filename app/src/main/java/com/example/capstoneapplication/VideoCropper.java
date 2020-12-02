@@ -51,7 +51,7 @@ public class VideoCropper extends AppCompatActivity {
     String [] ffmpegCommand;
     FFmpeg ff;
     MediaMetadataRetriever metaRetriever;
-
+    Utility util;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +60,13 @@ public class VideoCropper extends AppCompatActivity {
         getSupportActionBar().setTitle("Video Cropper");
         axVideoTimeline = findViewById(R.id.AXVideoTimelineView4);
         Intent passUri = getIntent();
+        util = new Utility();
 
         if (passUri != null) {
             String videoPath = passUri.getStringExtra("uri");
             uri = Uri.parse(videoPath);
             frame = findViewById(R.id.cropImageView);
-            axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),uri));
+            axVideoTimeline.setVideoPath(util.getPathFromUri(getApplicationContext(),uri));
             metaRetriever = new MediaMetadataRetriever();
             metaRetriever.setDataSource(getApplicationContext(),uri);
             duration = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
@@ -175,7 +176,7 @@ public class VideoCropper extends AppCompatActivity {
         int height = Math.abs(cropShape.top - cropShape.bottom);
         int leftBound = cropShape.left;
         int topBound = cropShape.top;
-        String filePath = getPathFromUri(getApplicationContext(),uri);
+        String filePath = util.getPathFromUri(getApplicationContext(),uri);
         File destFolder = new File("storage/emulated/0/EditingApeOutput/CroppedVideos");
         if (!destFolder.exists()) {
             destFolder.mkdir();
@@ -218,25 +219,6 @@ public class VideoCropper extends AppCompatActivity {
 
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriData) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriData, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
 
 }
 

@@ -45,6 +45,7 @@ public class VideoResolution extends AppCompatActivity {
     String [] ffmpegCommand;
     AXVideoTimelineView axVideoTimeline;
     FFmpeg ff;
+    Utility util;
 
 
 
@@ -56,16 +57,17 @@ public class VideoResolution extends AppCompatActivity {
         pauseIcon = findViewById(R.id.pause_icon);
         axVideoTimeline = findViewById(R.id.AXVideoTimelineView3);
         Intent passUri = getIntent();
+        util = new Utility();
 
         if (passUri != null) {
 
             inputVideoPath = passUri.getStringExtra("uri");
             uri = Uri.parse(inputVideoPath);
-            inputVideoAbsolutePath = getPathFromUri(getApplicationContext(),uri);
+            inputVideoAbsolutePath = util.getPathFromUri(getApplicationContext(),uri);
             vidPlaying = true;
             vidView.setVideoURI(uri);
             vidView.start();
-            axVideoTimeline.setVideoPath(getPathFromUri(getApplicationContext(),uri));
+            axVideoTimeline.setVideoPath(util.getPathFromUri(getApplicationContext(),uri));
         }
         clickListeners();
     }
@@ -184,7 +186,7 @@ public class VideoResolution extends AppCompatActivity {
     }
 
     private void changeVideoResolution() throws FFmpegCommandAlreadyRunningException{
-        String filePath = getPathFromUri(getApplicationContext(),uri);
+        String filePath = util.getPathFromUri(getApplicationContext(),uri);
         File destFolder = new File("storage/emulated/0/EditingApeOutput/ResChangedVideos/");
         if (!destFolder.exists()) {
             destFolder.mkdir();
@@ -228,24 +230,6 @@ public class VideoResolution extends AppCompatActivity {
 
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriData) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriData, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
 
 }

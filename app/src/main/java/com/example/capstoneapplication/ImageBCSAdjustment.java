@@ -41,6 +41,7 @@ public class ImageBCSAdjustment extends AppCompatActivity{
     RadioButton bButton, cButton, sButton;
     RadioGroup BCSOptions;
     SeekBar adjustmentLevelBar;
+    Utility util;
 
 
 
@@ -48,6 +49,7 @@ public class ImageBCSAdjustment extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_bcs_adjustment);
         getSupportActionBar().setTitle("Image BCS Adjustment");
+        util = new Utility();
         Intent passUri = getIntent();
         if (passUri != null) {
             String imagePath = passUri.getStringExtra("uri");
@@ -61,7 +63,7 @@ public class ImageBCSAdjustment extends AppCompatActivity{
         BCSOptions = findViewById(R.id.radioGroup);
         adjustmentLevelBar = findViewById(R.id.seekBar);
         adjustmentLevelBar.setProgress(50);
-        inputVideoAbsolutePath = getPathFromUri(getApplicationContext(), uri);
+        inputVideoAbsolutePath = util.getPathFromUri(getApplicationContext(), uri);
     }
 
 
@@ -130,9 +132,6 @@ public class ImageBCSAdjustment extends AppCompatActivity{
     }
 
 
-
-
-
     private void executeCommand(String [] ffmpegCommand) throws FFmpegCommandAlreadyRunningException {
         ff= FFmpeg.getInstance(com.example.capstoneapplication.ImageBCSAdjustment.this);
         ff.execute(ffmpegCommand, new ExecuteBinaryResponseHandler(){
@@ -160,25 +159,7 @@ public class ImageBCSAdjustment extends AppCompatActivity{
 
     }
 
-    private String getPathFromUri(Context ctxt, Uri uriContent) {
-        Cursor cursor = null;
-        try {
-            String[] project = {MediaStore.Images.Media.DATA};
-            cursor = ctxt.getContentResolver().query(uriContent, project, null, null, null);
-            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-            cursor.moveToFirst();
-            return cursor.getString(col_index);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return "";
-        }
-        finally{
-            if (cursor!=null){
-                cursor.close();
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

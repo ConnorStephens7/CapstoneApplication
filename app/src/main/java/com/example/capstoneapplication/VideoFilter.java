@@ -236,6 +236,7 @@ public class VideoFilter extends AppCompatActivity {
                         case 14:
                             sourceFile= new File(savePathPrefix,"preview14.mp4");
                             break;
+                            
 
 
                     }
@@ -499,7 +500,7 @@ public class VideoFilter extends AppCompatActivity {
                 Toast FastToast = Toast.makeText(getApplicationContext(),"Speed up", Toast. LENGTH_SHORT);
                 FastToast.show();
                 String[] ffmpegCommand;
-                ffmpegCommand = new String [] {"-y","-i", inputVideoAbsolutePath, "-filter:v", "setpts=0.5*PTS", filterPreviewPath + "16.mp4"};
+                ffmpegCommand = new String [] {"-y","-i", inputVideoAbsolutePath, "-filter:v", "setpts=0.5*PTS", filterPreviewPath + "13.mp4"};
                 try {
                     executeCommand(ffmpegCommand);
                 } catch (FFmpegCommandAlreadyRunningException e) {
@@ -520,7 +521,7 @@ public class VideoFilter extends AppCompatActivity {
                 Toast SlowToast = Toast.makeText(getApplicationContext(),"Slow Down", Toast. LENGTH_SHORT);
                 SlowToast.show();
                 String[] ffmpegCommand;
-                ffmpegCommand = new String [] {"-y","-i", inputVideoAbsolutePath, "-filter:v", "setpts=2*PTS", filterPreviewPath + "17.mp4"};
+                ffmpegCommand = new String [] {"-y","-i", inputVideoAbsolutePath, "-filter:v", "setpts=2*PTS", filterPreviewPath + "14.mp4"};
                 try {
                     executeCommand(ffmpegCommand);
                 } catch (FFmpegCommandAlreadyRunningException e) {

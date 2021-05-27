@@ -233,8 +233,6 @@ public class VideoTrimmer extends AppCompatActivity {
 
             //FFmpeg command
             command = new String[]{"-ss", "" + min , "-y", "-i", inputVideoPath, "-t", "" + (max - min) , "-vcodec", "mpeg4", "-b:v", "2097152", "-b:a", "48000", "-ac", "2", "-ar", "22050", destination.toString()};
-
-
             ff= FFmpeg.getInstance(com.example.capstoneapplication.VideoTrimmer.this);
             executeCommand();
         }

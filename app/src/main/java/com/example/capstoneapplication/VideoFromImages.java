@@ -263,7 +263,7 @@ public class VideoFromImages extends AppCompatActivity implements View.OnClickLi
         super.onActivityResult(reqCode,resCode,data);
         if(resCode == RESULT_OK && reqCode == 100){
             imageUri = data.getData();
-            imagePaths[currentIndex] = util.getPathFromUri(getApplicationContext(),imageUri);
+            imagePaths[currentIndex] = getPathFromUri(getApplicationContext(),imageUri);
             switch(currentIndex) {
                 case 0:
                     imageView1.setImageURI(imageUri);
@@ -338,6 +338,24 @@ public class VideoFromImages extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    public String getPathFromUri(Context ctxt, Uri uriData) {
+        Cursor cursor = null;
+        try {
+            String[] project = {MediaStore.Images.Media.DATA};
+            cursor = ctxt.getContentResolver().query(uriData, project, null, null, null);
+            int col_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+            cursor.moveToFirst();
+            return cursor.getString(col_index);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return "";
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
 
 
     @Override

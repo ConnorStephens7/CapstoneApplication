@@ -1,9 +1,8 @@
 package com.example.capstoneapplication;
 
-import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.VideoView;
 
@@ -46,7 +44,7 @@ public class VideoMerge extends AppCompatActivity {
     String [] command;
     boolean vidPlaying = false;
     int vidDuration;
-    String fileName, inputVideoPath;
+    String fileName;
     AXVideoTimelineView axVideoTimeline;
     File destination;
     FFmpeg ff;
@@ -218,13 +216,14 @@ public class VideoMerge extends AppCompatActivity {
 
     }
 
-
-
     public void selectSecondVideo(View v){
-        Intent galleryAccess = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent galleryAccess = new Intent();
         galleryAccess.setType("video/*");
+        galleryAccess = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
         startActivityForResult(galleryAccess,100);
     }
+
     @Override
     protected void onActivityResult(int reqCode, int resCode, Intent data)
     {
@@ -272,8 +271,6 @@ public class VideoMerge extends AppCompatActivity {
         vidPlaying =true;
         vidView.start();
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

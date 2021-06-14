@@ -29,6 +29,8 @@ import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VideoFilter extends AppCompatActivity {
 
@@ -37,15 +39,16 @@ public class VideoFilter extends AppCompatActivity {
     ImageView imgView;
     VideoView vidView;
     String fileName;
-    boolean vidPlaying;
     AXVideoTimelineView axVideoTimeline;
     String inputVideoPath;
     String inputVideoAbsolutePath;
-    String filterPreviewPath = "storage/emulated/0/EditingApeOutput/FilteredVideos/preview";
-    String savePathPrefix = "storage/emulated/0/EditingApeOutput/FilteredVideos";
     FFmpeg ff;
-    int filterSelection;
     Utility util;
+    boolean vidPlaying;
+    final String filterPreviewPath = "storage/emulated/0/EditingApeOutput/FilteredVideos/preview";
+    final String savePathPrefix = "storage/emulated/0/EditingApeOutput/FilteredVideos";
+    Integer filterSelection;
+    Map<Integer, String> previewNameMap;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +78,22 @@ public class VideoFilter extends AppCompatActivity {
         configureRedBlueButton();
         configureFastButton();
         configureSlowButton();
+
+        previewNameMap = new HashMap<Integer, String>();
+        previewNameMap.put(1, "preview1.mp4");
+        previewNameMap.put(2, "preview2.mp4");
+        previewNameMap.put(3, "preview3.mp4");
+        previewNameMap.put(4, "preview4.mp4");
+        previewNameMap.put(5, "preview5.mp4");
+        previewNameMap.put(6, "preview6.mp4");
+        previewNameMap.put(7, "preview7.mp4");
+        previewNameMap.put(8, "preview8.mp4");
+        previewNameMap.put(9, "preview9.mp4");
+        previewNameMap.put(10, "preview10.mp4");
+        previewNameMap.put(11, "preview11.mp4");
+        previewNameMap.put(12, "preview12.mp4");
+        previewNameMap.put(13, "preview13.mp4");
+        previewNameMap.put(14, "preview14.mp4");
 
         if (passUri != null) {
 
@@ -183,64 +202,9 @@ public class VideoFilter extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     fileName = input.getText().toString() +".mp4";
-                    File sourceFile =new File("0","0");
-                    switch(filterSelection){
-                        case 1:
-                            sourceFile= new File(savePathPrefix,"preview1.mp4");
-                            break;
-
-                        case 2:
-                            sourceFile= new File(savePathPrefix,"preview2.mp4");
-                            break;
-
-                        case 3:
-                            sourceFile= new File(savePathPrefix,"preview3.mp4");
-                            break;
-
-                        case 4:
-                            sourceFile= new File(savePathPrefix,"preview4.mp4");
-                            break;
-
-                        case 5:
-                            sourceFile= new File(savePathPrefix,"preview5.mp4");
-                            break;
-
-                        case 6:
-                            sourceFile= new File(savePathPrefix,"preview6.mp4");
-                            break;
-
-                        case 7:
-                            sourceFile= new File(savePathPrefix,"preview7.mp4");
-                            break;
-
-                        case 8:
-                            sourceFile= new File(savePathPrefix,"preview8.mp4");
-                            break;
-                        case 9:
-                            sourceFile= new File(savePathPrefix,"preview9.mp4");
-                            break;
-                        case 10:
-                            sourceFile= new File(savePathPrefix,"preview10.mp4");
-                            break;
-                        case 11:
-                            sourceFile= new File(savePathPrefix,"preview11.mp4");
-                            break;
-                        case 12:
-                            sourceFile= new File(savePathPrefix,"preview12.mp4");
-                            break;
-
-                        case 13:
-                            sourceFile= new File(savePathPrefix,"preview13.mp4");
-                            break;
-
-                        case 14:
-                            sourceFile= new File(savePathPrefix,"preview14.mp4");
-                            break;
-
-
-
-                    }
-
+                    File sourceFile = new File("0","0");
+                    String previewName = previewNameMap.get(filterSelection);
+                    sourceFile= new File(savePathPrefix, previewName);
                     File saved = new File("storage/emulated/0//EditingApeOutput/FilteredVideos/", fileName);
                     sourceFile.renameTo(saved);
                 }
@@ -533,13 +497,13 @@ public class VideoFilter extends AppCompatActivity {
     }
 
     private void executeCommand(String [] ffmpegCommand) throws FFmpegCommandAlreadyRunningException {
-        final Toast grayToast=Toast.makeText(getApplicationContext(),"Please wait, video filtering, preview will display when finished", Toast. LENGTH_SHORT);
+        final Toast filterToast=Toast.makeText(getApplicationContext(),"Please wait, video filtering, preview will display when finished", Toast. LENGTH_SHORT);
 
         ff.execute(ffmpegCommand, new ExecuteBinaryResponseHandler(){
 
             @Override
             public void onProgress(String message){
-                grayToast.show();
+                filterToast.show();
                 Log.i("VideoFilter","Progress");
             }
 

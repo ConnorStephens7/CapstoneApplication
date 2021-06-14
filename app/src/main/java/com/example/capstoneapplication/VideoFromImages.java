@@ -28,6 +28,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class VideoFromImages extends AppCompatActivity implements View.OnClickListener {
@@ -38,7 +40,9 @@ public class VideoFromImages extends AppCompatActivity implements View.OnClickLi
     File destination, imagesInput;
     FFmpeg ff;
     int currentIndex;
-    Utility util;
+    Map<Integer, Integer> clickMap;
+    Map<Integer, ImageView> viewMap;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,52 +79,45 @@ public class VideoFromImages extends AppCompatActivity implements View.OnClickLi
         imageView8.setOnClickListener(this);
         imageView9.setOnClickListener(this);
         imageView10.setOnClickListener(this);
+
+        //need 2 hash maps to index array of file paths (imagePaths)
+        clickMap = new HashMap<>();
+        clickMap.put(R.id.image1, 0);
+        clickMap.put(R.id.image2, 1);
+        clickMap.put(R.id.image3, 2);
+        clickMap.put(R.id.image4, 3);
+        clickMap.put(R.id.image5, 4);
+        clickMap.put(R.id.image6, 5);
+        clickMap.put(R.id.image7, 6);
+        clickMap.put(R.id.image8, 7);
+        clickMap.put(R.id.image9, 8);
+        clickMap.put(R.id.image10, 9);
+
+        viewMap = new HashMap<>();
+        viewMap.put(0, imageView1);
+        viewMap.put(1, imageView2);
+        viewMap.put(2, imageView3);
+        viewMap.put(3, imageView4);
+        viewMap.put(4, imageView5);
+        viewMap.put(5, imageView6);
+        viewMap.put(6, imageView7);
+        viewMap.put(7, imageView8);
+        viewMap.put(8, imageView9);
+        viewMap.put(9, imageView10);
+
+
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.image1:
-                currentIndex = 0;
-                selectAnImage();
-                break;
-            case R.id.image2:
-                currentIndex = 1;
-                selectAnImage();
-                break;
-            case R.id.image3:
-                currentIndex = 2;
-                selectAnImage();
-                break;
-            case R.id.image4:
-                currentIndex = 3;
-                selectAnImage();
-                break;
-            case R.id.image5:
-                currentIndex = 4;
-                selectAnImage();
-                break;
-            case R.id.image6:
-                currentIndex = 5;
-                selectAnImage();
-                break;
-            case R.id.image7:
-                currentIndex = 6;
-                selectAnImage();
-                break;
-            case R.id.image8:
-                currentIndex = 7;
-                selectAnImage();
-                break;
-            case R.id.image9:
-                currentIndex = 8;
-                selectAnImage();
-                break;
-            case R.id.image10:
-                currentIndex = 9;
-                selectAnImage();
-                break;
+        Integer viewId = v.getId();
+        try {
+            currentIndex = clickMap.get(viewId);
         }
+        catch (java.lang.NullPointerException e){
+            e.printStackTrace();
+        }
+        selectAnImage();
     }
 
 
@@ -264,49 +261,9 @@ public class VideoFromImages extends AppCompatActivity implements View.OnClickLi
         if(resCode == RESULT_OK && reqCode == 100){
             imageUri = data.getData();
             imagePaths[currentIndex] = getPathFromUri(getApplicationContext(),imageUri);
-            switch(currentIndex) {
-                case 0:
-                    imageView1.setImageURI(imageUri);
-                    setDuration();
-                    break;
-                case 1:
-                    imageView2.setImageURI(imageUri);
-                    setDuration();
-                    break;
-                case 2:
-                    imageView3.setImageURI(imageUri);
-                    setDuration();
-                    break;
-                case 3:
-                    imageView4.setImageURI(imageUri);
-                    setDuration();
-                    break;
-                case 4:
-                    imageView5.setImageURI(imageUri);
-                    setDuration();
-                    break;
-                case 5:
-                    imageView6.setImageURI(imageUri);
-                    setDuration();
-                    break;
-                case 6:
-                    imageView7.setImageURI(imageUri);
-                    setDuration();
-                    break;
-                case 7:
-                    imageView8.setImageURI(imageUri);
-                    setDuration();
-                    break;
-                case 8:
-                    imageView9.setImageURI(imageUri);
-                    setDuration();
-                    break;
-                case 9:
-                    imageView10.setImageURI(imageUri);
-                    setDuration();
-                    break;
-            }
-
+            ImageView currentImageView = viewMap.get(currentIndex);
+            currentImageView.setImageURI(imageUri);
+            setDuration();
         }
 
     }

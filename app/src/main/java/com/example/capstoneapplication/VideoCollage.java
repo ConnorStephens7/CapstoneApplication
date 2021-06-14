@@ -1,9 +1,7 @@
 package com.example.capstoneapplication;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,6 +26,8 @@ import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class VideoCollage extends AppCompatActivity implements View.OnClickListener{
@@ -42,6 +42,9 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
     int videoCount, vidViewID;
     int [] frameHistory;
     Utility util;
+    Map<Integer, Integer> clickMap;
+    Map<Integer,VideoView> viewMap;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,7 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
             String videoPath = passUri.getStringExtra("uri");
             uri = Uri.parse(videoPath);
         }
-        videoCount =0;
+        videoCount = 0;
         videoPaths = new String[4];
         frameHistory = new int[4];
 
@@ -83,29 +86,33 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
         videoView3.setOnClickListener(this);
         videoView4.setOnClickListener(this);
 
+        //need 2 hash maps to maintain array of used videoViews (frameHistory)
+        clickMap = new HashMap<>();
+        clickMap.put(R.id.video1, 1);
+        clickMap.put(R.id.video2, 2);
+        clickMap.put(R.id.video3,3);
+        clickMap.put(R.id.video4,4);
+
+        viewMap = new HashMap<>();
+        viewMap.put(1, videoView1);
+        viewMap.put(2, videoView2);
+        viewMap.put(3, videoView3);
+        viewMap.put(4, videoView4);
+
+
+
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.video1:
-                vidViewID = 1;
-                selectAVideo();
-                break;
-            case R.id.video2:
-                vidViewID = 2;
-                selectAVideo();
-                break;
-            case R.id.video3:
-                vidViewID = 3;
-                selectAVideo();
-                break;
-            case R.id.video4:
-                vidViewID = 4;
-                selectAVideo();
-                break;
-
+        Integer viewIdXML = v.getId();
+        try {
+            vidViewID = clickMap.get(viewIdXML);
         }
+        catch (java.lang.NullPointerException e){
+            e.printStackTrace();
+        }
+        selectAVideo();
     }
 
 
@@ -234,9 +241,9 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-
         return result;
     }
+
     @Override
     protected void onActivityResult(int reqCode, int resCode, Intent data)
     {
@@ -252,25 +259,9 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
                 videoPaths[vidViewID-1] = util.getPathFromUri(getApplicationContext(),videoUri);
             }
         }
-        switch (vidViewID){
-            case 1:
-                videoView1.setVideoURI(videoUri);
-                resumeVideoViews();
-                break;
-            case 2:
-                videoView2.setVideoURI(videoUri);
-                resumeVideoViews();
-                break;
-            case 3:
-                videoView3.setVideoURI(videoUri);
-                resumeVideoViews();
-                break;
-            case 4:
-                videoView4.setVideoURI(videoUri);
-                resumeVideoViews();
-                break;
-
-        }
+        VideoView currentVideoView = viewMap.get(vidViewID);
+        currentVideoView.setVideoURI(videoUri);
+        resumeVideoViews();
     }
 
     public void resumeVideoViews(){
@@ -286,7 +277,7 @@ public class VideoCollage extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onProgress(String message){
-                Log.i("VideoFromImages","Progress");
+                Log.i("VideoCollage","Progress");
             }
 
             @Override
